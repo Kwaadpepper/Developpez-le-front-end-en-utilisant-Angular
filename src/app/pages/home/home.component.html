@@ -1,3 +1,14 @@
 <h2>Olympic games app</h2>
 <hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
+<div *ngFor="let countryStat of (olympics$ | async)">
+  <span>ID&nbsp;<span>{{ countryStat.id }}</span></span><br>
+  <span>Country&nbsp;<span>{{ countryStat.country }}</span></span><br>
+  <span>Participations&nbsp;:</span><br>
+  <ul *ngFor="let participation of countryStat.participations">
+    <li><span>Id&nbsp;<span>{{ participation.id }}</span></span></li>
+    <li><span>City&nbsp;<span>{{ participation.city }}</span></span></li>
+    <li><span>Nb atheletes&nbsp;<span>{{ participation.atheleteCount }}</span></span></li>
+    <li><span>Year&nbsp;<span>{{ participation.year }}</span></span></li>
+    <li><span>Nb medals&nbsp;<span>{{ participation.medalsCount }}</span></span></li>
+  </ul>
+</div>
