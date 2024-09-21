@@ -1,6 +1,7 @@
 <h2>Olympic games app</h2>
+<button (click)="reloadResults()">Reload Countries</button>
 <hr />
-<div *ngFor="let countryStat of olympicCountries">
+<!-- <div *ngFor="let countryStat of olympicCountries">
   <span>ID&nbsp;<span>{{ countryStat.id }}</span></span><br>
   <span>Country&nbsp;<span>{{ countryStat.country }}</span></span><br>
   <span>Participations&nbsp;:</span><br>
@@ -11,5 +12,6 @@
     <li><span>Year&nbsp;<span>{{ participation.year }}</span></span></li>
     <li><span>Nb medals&nbsp;<span>{{ participation.medalsCount }}</span></span></li>
   </ul>
-</div>
-<olympic-pie-chart [olympicCountries]="olympicCountries"></olympic-pie-chart>
+</div> -->
+<olympic-pie-chart [olympicCountries]="olympicCountries"
+  (selected)="displayStatsForAnOlympicCountry($event)"></olympic-pie-chart>
