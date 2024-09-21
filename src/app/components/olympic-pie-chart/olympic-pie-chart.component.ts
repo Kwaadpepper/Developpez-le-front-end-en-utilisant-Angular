@@ -1,6 +1,12 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Color, DataItem, LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
 import OlympicCountry from 'src/app/core/models/OlympicCountry';
+
+interface OlympicDataItem extends DataItem {
+  extra: {
+    id: number
+  }
+}
 
 @Component({
   selector: 'olympic-pie-chart',
@@ -14,11 +20,14 @@ import OlympicCountry from 'src/app/core/models/OlympicCountry';
 export class OlympicPieChartComponent implements OnInit, OnChanges {
   @Input({ required: true }) olympicCountries: Array<OlympicCountry> = [];
 
+  @Output() selected: EventEmitter<OlympicCountry> = new EventEmitter();
+
   // NGX inputs
-  single: DataItem[] = [
+  single: OlympicDataItem[] = [
     {
-      "name": "No Data",
-      "value": 0,
+      name: "No Data",
+      value: 0,
+      extra: {id: 0}
     }
   ];
   view: [number, number] = [700, 400];
@@ -38,19 +47,33 @@ export class OlympicPieChartComponent implements OnInit, OnChanges {
     if (changes["olympicCountries"]) {
       this.updatePieChartData(changes["olympicCountries"].currentValue);
     }
+
   }
 
-  onSelect(data: DataItem): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  onSelect(data: OlympicDataItem): void {
+    const dataItemName = data.extra.id;
+    this.selected.emit(this.getOlympicCountryFromId(dataItemName));
   }
 
   private updatePieChartData(olympicCountries: typeof this.olympicCountries): void {
     this.single = [];
     olympicCountries.forEach(olympicCountry => this.single.push({
       name: olympicCountry.country,
+      label: olympicCountry.country,
+      extra: {
+        id: olympicCountry.id
+      },
       value: olympicCountry.participations
         .map(participation => participation.medalsCount)
         .reduce((prev, curr) => prev + curr)
     }));
+  }
+
+  private getOlympicCountryFromId(id: number): OlympicCountry {
+    const olympicCountry = this.olympicCountries.find(oC => oC.id === id);
+    if (olympicCountry === undefined) {
+      throw new Error(`Could not find olympic country id '${id}'`);
+    }
+    return olympicCountry;
   }
 }
