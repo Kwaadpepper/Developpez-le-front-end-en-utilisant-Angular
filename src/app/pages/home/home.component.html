@@ -1,6 +1,6 @@
 <h2>Olympic games app</h2>
 <hr />
-<div *ngFor="let countryStat of (olympics$ | async)">
+<div *ngFor="let countryStat of olympicCountries">
   <span>ID&nbsp;<span>{{ countryStat.id }}</span></span><br>
   <span>Country&nbsp;<span>{{ countryStat.country }}</span></span><br>
   <span>Participations&nbsp;:</span><br>
@@ -12,3 +12,4 @@
     <li><span>Nb medals&nbsp;<span>{{ participation.medalsCount }}</span></span></li>
   </ul>
 </div>
+<olympic-pie-chart [olympicCountries]="olympicCountries"></olympic-pie-chart>
