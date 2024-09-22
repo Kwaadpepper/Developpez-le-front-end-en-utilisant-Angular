@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http'
 import { ErrorHandler as NgErrorHandler, NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
+import { NgApexchartsModule } from 'ng-apexcharts'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { OlympicPieChartComponent } from './components/can-display-olympic-countries/olympic-pie-chart/olympic-pie-chart.component'
@@ -11,7 +12,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component'
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, DetailsComponent, NotFoundComponent],
-  imports: [BrowserModule, AppRoutingModule, OlympicPieChartComponent],
+  imports: [BrowserModule, AppRoutingModule, OlympicPieChartComponent, NgApexchartsModule],
   providers: [provideHttpClient(), { provide: NgErrorHandler, useClass: ErrorHandler }],
   bootstrap: [AppComponent],
 })

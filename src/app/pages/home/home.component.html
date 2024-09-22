@@ -13,5 +13,5 @@
     <li><span>Nb medals&nbsp;<span>{{ participation.medalsCount }}</span></span></li>
   </ul>
 </div> -->
-<olympic-pie-chart [olympicCountries]="olympicCountries"
-  (selected)="displayStatsForAnOlympicCountry($event)"></olympic-pie-chart>
+<app-olympic-pie-chart [olympicCountries]="olympicCountries"
+  (selected)="displayStatsForAnOlympicCountry($event)"></app-olympic-pie-chart>

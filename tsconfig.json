@@ -18,7 +18,8 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "lib": ["ES2022", "DOM"]
+    "lib": ["ES2022", "DOM"],
+    "types": ["color-types"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

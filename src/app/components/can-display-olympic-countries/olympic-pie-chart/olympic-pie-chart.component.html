@@ -1,4 +1,2 @@
-<ngx-charts-pie-chart [view]="view" [scheme]="colorScheme" [results]="single" [gradient]="gradient"
-  [legend]="showLegend" [legendPosition]="legendPosition" [labels]="showLabels" [doughnut]="isDoughnut"
-  (select)="onSelect($event)">
-</ngx-charts-pie-chart>
+<apx-chart [labels]="chartOptions.labels" [series]="chartOptions.series" [chart]="chartOptions.chart"
+  [title]="chartOptions.title" [colors]="chartOptions.colors" [dataLabels]="chartOptions.dataLabels"></apx-chart>

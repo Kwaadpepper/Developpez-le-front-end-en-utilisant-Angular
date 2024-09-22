@@ -1,76 +1,91 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Color, DataItem, LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
-import CanDisplayOlympicCountries from 'src/app/core/components/CanDisplayOlympicCountries';
-import OlympicCountry from 'src/app/core/models/OlympicCountry';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core'
+import { ApexChart, ApexDataLabels, ApexNonAxisChartSeries, ApexTitleSubtitle, NgApexchartsModule } from 'ng-apexcharts'
+import CanDisplayOlympicCountries from 'src/app/core/components/CanDisplayOlympicCountries'
+import OlympicCountry from 'src/app/core/models/OlympicCountry'
+import OlympicConfig from 'src/app/core/OlympicConfig'
 
-interface OlympicDataItem extends DataItem {
-  extra: {
-    id: number
-  }
+/** A selected data of an apex pie chart */
+interface DataPointSelectionOption {
+  dataPointIndex: number
+  selectedDataPoints: number[]
+  seriesIndex: number
 }
+/** This represents a js instance of an ApexChart, no definition is provided */
+type ApexChartJsInstance = object
 
 @Component({
-  selector: 'olympic-pie-chart',
+  selector: 'app-olympic-pie-chart',
   standalone: true,
-  imports: [NgxChartsModule],
+  imports: [NgApexchartsModule],
   templateUrl: './olympic-pie-chart.component.html',
   styleUrl: './olympic-pie-chart.component.scss',
 })
 
-/** NGX PieChartComponent wrapper */
+/** Apex PieChartComponent wrapper */
 export class OlympicPieChartComponent extends CanDisplayOlympicCountries implements OnInit, OnChanges {
-// NGX inputs
-  single: OlympicDataItem[] = [
-    {
-      name: "No Data",
-      value: 0,
-      extra: {id: 0}
-    }
-  ];
-  view: [number, number] = [700, 400];
+  public chartOptions: {
+    labels: string[]
+    series: ApexNonAxisChartSeries
+    chart: ApexChart
+    title: ApexTitleSubtitle
+    dataLabels: ApexDataLabels
+    colors: Color[]
+  }
 
-  // NGX options
-  gradient: boolean = true;
-  showLegend: boolean = false;
-  showLabels: boolean = true;
-  isDoughnut: boolean = false;
-  legendPosition: LegendPosition = LegendPosition.Below;
-  colorScheme: Color | string = "cool";
+  constructor() {
+    super()
+    this.chartOptions = {
+      labels: [],
+      series: [],
+      chart: {
+        type: 'pie',
+        events: {
+          dataPointSelection: (e: MouseEvent, chart: ApexChartJsInstance, option: DataPointSelectionOption) => {
+            const country = this.olympicCountries.at(option.dataPointIndex)
+            if (country === undefined) {
+              throw new Error(`Failed to fetch country from list as index '${option.dataPointIndex}'`)
+            }
+            this.selectedCountryEvent(country)
+          },
+        },
+      },
+      title: {
+        text: 'test',
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          colors: OlympicConfig.getColors(),
+        },
+      },
+      colors: OlympicConfig.getColors(),
+    }
+  }
 
   ngOnInit(): void {
-    this.updatePieChartData(this.olympicCountries);
+    this.updatePieChartData(this.olympicCountries)
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes["olympicCountries"]) {
-      this.updatePieChartData(changes["olympicCountries"].currentValue);
+    if (changes['olympicCountries']) {
+      this.updatePieChartData(changes['olympicCountries'].currentValue)
     }
   }
 
-  onSelect(data: OlympicDataItem): void {
-    const dataItemName = data.extra.id;
-    this.selected.emit(this.getOlympicCountryFromId(dataItemName));
+  private selectedCountryEvent(country: OlympicCountry): void {
+    this.selected.emit(country)
   }
 
   private updatePieChartData(olympicCountries: typeof this.olympicCountries): void {
-    this.single = [];
-    olympicCountries.forEach(olympicCountry => this.single.push({
-      name: olympicCountry.country,
-      label: olympicCountry.country,
-      extra: {
-        id: olympicCountry.id
-      },
-      value: olympicCountry.participations
-        .map(participation => participation.medalsCount)
-        .reduce((prev, curr) => prev + curr)
-    }));
-  }
-
-  private getOlympicCountryFromId(id: number): OlympicCountry {
-    const olympicCountry = this.olympicCountries.find(oC => oC.id === id);
-    if (olympicCountry === undefined) {
-      throw new Error(`Could not find olympic country id '${id}'`);
-    }
-    return olympicCountry;
+    this.chartOptions.labels = []
+    this.chartOptions.series = []
+    olympicCountries.forEach((olympicCountry) => {
+      this.chartOptions.labels.push(olympicCountry.country)
+      this.chartOptions.series.push(
+        olympicCountry.participations
+          .map(participation => participation.medalsCount)
+          .reduce((prev, curr) => prev + curr),
+      )
+    })
   }
 }
