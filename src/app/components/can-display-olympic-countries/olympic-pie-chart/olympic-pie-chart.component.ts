@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Color, DataItem, LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
+import CanDisplayOlympicCountries from 'src/app/core/components/CanDisplayOlympicCountries';
 import OlympicCountry from 'src/app/core/models/OlympicCountry';
 
 interface OlympicDataItem extends DataItem {
@@ -17,12 +18,8 @@ interface OlympicDataItem extends DataItem {
 })
 
 /** NGX PieChartComponent wrapper */
-export class OlympicPieChartComponent implements OnInit, OnChanges {
-  @Input({ required: true }) olympicCountries: Array<OlympicCountry> = [];
-
-  @Output() selected: EventEmitter<OlympicCountry> = new EventEmitter();
-
-  // NGX inputs
+export class OlympicPieChartComponent extends CanDisplayOlympicCountries implements OnInit, OnChanges {
+// NGX inputs
   single: OlympicDataItem[] = [
     {
       name: "No Data",
@@ -39,6 +36,7 @@ export class OlympicPieChartComponent implements OnInit, OnChanges {
   isDoughnut: boolean = false;
   legendPosition: LegendPosition = LegendPosition.Below;
   colorScheme: Color | string = "cool";
+
   ngOnInit(): void {
     this.updatePieChartData(this.olympicCountries);
   }
@@ -47,7 +45,6 @@ export class OlympicPieChartComponent implements OnInit, OnChanges {
     if (changes["olympicCountries"]) {
       this.updatePieChartData(changes["olympicCountries"].currentValue);
     }
-
   }
 
   onSelect(data: OlympicDataItem): void {
