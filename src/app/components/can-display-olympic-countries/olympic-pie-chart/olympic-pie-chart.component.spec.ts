@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { NotFoundComponent } from './not-found.component'
+import { OlympicPieChartComponent } from './olympic-pie-chart.component'
 
-describe('NotFoundComponent', () => {
-  let component: NotFoundComponent
-  let fixture: ComponentFixture<NotFoundComponent>
+describe('PieChartComponent', () => {
+  let component: OlympicPieChartComponent
+  let fixture: ComponentFixture<OlympicPieChartComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NotFoundComponent],
+      imports: [OlympicPieChartComponent],
     })
       .compileComponents()
 
-    fixture = TestBed.createComponent(NotFoundComponent)
+    fixture = TestBed.createComponent(OlympicPieChartComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

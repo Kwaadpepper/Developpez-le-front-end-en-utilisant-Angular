@@ -1,0 +1,14 @@
+<div class="center">
+  <h2 i18n>Page detail</h2>
+  <a routerLink="">retour</a>
+  <p i18n>details works!</p>
+  <span>{{ olympicCountry.id }}</span>
+  <span>{{ olympicCountry.country }}</span>
+  <ul *ngFor="let participation of participations">
+    <li><span>Id&nbsp;<span>{{ participation.id }}</span></span></li>
+    <li><span>City&nbsp;<span>{{ participation.city }}</span></span></li>
+    <li><span>Nb atheletes&nbsp;<span>{{ participation.atheleteCount }}</span></span></li>
+    <li><span>Year&nbsp;<span>{{ participation.year }}</span></span></li>
+    <li><span>Nb medals&nbsp;<span>{{ participation.medalsCount }}</span></span></li>
+  </ul>
+</div>

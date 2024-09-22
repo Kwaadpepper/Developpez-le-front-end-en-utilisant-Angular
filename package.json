@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint",
+    "lint-ci": "ng lint --format json --silent"
   },
   "private": true,
   "dependencies": {
@@ -18,21 +20,32 @@
     "@angular/platform-browser": "^18.0.3",
     "@angular/platform-browser-dynamic": "^18.0.3",
     "@angular/router": "^18.0.3",
+    "apexcharts": "^3.53.0",
+    "lodash-es": "^4.17.21",
+    "ng-apexcharts": "^1.12.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.0.3",
+    "@angular/cdk": "^18.2.5",
     "@angular/cli": "^18.0.3",
     "@angular/compiler-cli": "^18.0.3",
+    "@angular/localize": "^18.2.5",
+    "@stylistic/eslint-plugin": "^2.8.0",
     "@types/jasmine": "~5.1.0",
+    "@types/lodash-es": "^4.17.12",
+    "angular-eslint": "^18.3.1",
+    "color-types": "^1.0.0",
+    "eslint": "^9.11.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.4.2"
+    "typescript": "~5.4.2",
+    "typescript-eslint": "^8.6.0"
   }
 }
