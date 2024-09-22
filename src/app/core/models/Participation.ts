@@ -12,9 +12,9 @@
  *    }
  */
 export default interface Participation {
-  id: number;
-  year: number;
-  city: string;
-  medalsCount: number;
-  atheleteCount: number;
+  id: number
+  year: number
+  city: string
+  medalsCount: number
+  atheleteCount: number
 }

@@ -1,17 +1,17 @@
-import { TestBed } from '@angular/core/testing';
-import { ResolveFn } from '@angular/router';
+import { TestBed } from '@angular/core/testing'
+import { ResolveFn } from '@angular/router'
 
-import { olympicCountryResolver } from './olympicCountry.resolver';
+import { olympicCountryResolver } from './olympicCountry.resolver'
 
 describe('olympicCountryResolver', () => {
   const executeResolver: ResolveFn<boolean> = (...resolverParameters) =>
-      TestBed.runInInjectionContext(() => olympicCountryResolver(...resolverParameters));
+    TestBed.runInInjectionContext(() => olympicCountryResolver(...resolverParameters))
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
+    TestBed.configureTestingModule({})
+  })
 
   it('should be created', () => {
-    expect(executeResolver).toBeTruthy();
-  });
-});
+    expect(executeResolver).toBeTruthy()
+  })
+})

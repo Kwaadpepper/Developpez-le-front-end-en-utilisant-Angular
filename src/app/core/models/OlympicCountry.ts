@@ -1,4 +1,4 @@
-import Participation from "./Participation";
+import Participation from './Participation'
 
 /**
  * Data incomming from a web service
@@ -13,7 +13,7 @@ import Participation from "./Participation";
  *    }
  */
 export default interface OlympicCountry {
-  id: number;
-  country: string;
-  participations: Array<Participation>
+  id: number
+  country: string
+  participations: Participation[]
 }

@@ -1,9 +1,9 @@
-import { Directive, EventEmitter, Input, Output } from "@angular/core";
-import OlympicCountry from "../models/OlympicCountry";
+import { Directive, EventEmitter, Input, Output } from '@angular/core'
+import OlympicCountry from '../models/OlympicCountry'
 
 @Directive()
 export default abstract class CanDisplayOlympicCountries {
-  @Input({ required: true }) olympicCountries: Array<OlympicCountry> = [];
+  @Input({ required: true }) olympicCountries: OlympicCountry[] = []
 
-  @Output() selected: EventEmitter<OlympicCountry> = new EventEmitter();
+  @Output() selected = new EventEmitter<OlympicCountry>()
 }
