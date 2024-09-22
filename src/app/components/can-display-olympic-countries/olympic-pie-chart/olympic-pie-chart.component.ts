@@ -50,7 +50,7 @@ export class OlympicPieChartComponent extends CanDisplayOlympicCountries impleme
         },
       },
       title: {
-        text: 'test',
+        text: $localize`Medals per Country`,
       },
       dataLabels: {
         enabled: true,
