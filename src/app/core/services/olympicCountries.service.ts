@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import OlympicCountry from '../models/OlympicCountry';
 
 export type OlympicCountriesServiceData = Array<OlympicCountry>;
