@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { Title } from '@angular/platform-browser'
 import { ActivatedRoute } from '@angular/router'
 import OlympicCountry from 'src/app/core/models/OlympicCountry'
 import Participation from 'src/app/core/models/Participation'
@@ -12,8 +13,9 @@ export class DetailsComponent implements OnInit {
   public olympicCountry: OlympicCountry
   public participations: Participation[] = []
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private titleService: Title, private route: ActivatedRoute) {
     this.olympicCountry = this.route.snapshot.data['olympicCountryId']
+    this.titleService.setTitle($localize`${this.olympicCountry.country} details`)
   }
 
   ngOnInit(): void {

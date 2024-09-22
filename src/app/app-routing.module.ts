@@ -5,16 +5,14 @@ import { DetailsComponent } from './pages/details/details.component'
 import { HomeComponent } from './pages/home/home.component'
 import { NotFoundComponent } from './pages/not-found/not-found.component'
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    title: 'Results',
   },
   {
     path: 'details/:olympicCountryId',
     component: DetailsComponent,
-    title: 'Details',
     resolve: {
       olympicCountryId: olympicCountryResolver,
     },
@@ -22,12 +20,10 @@ const routes: Routes = [
   {
     path: 'missing-page', // wildcard
     component: NotFoundComponent,
-    title: 'Page not found',
   },
   {
     path: '**', // wildcard
     component: NotFoundComponent,
-    title: 'Page not found',
   },
 ]
 
