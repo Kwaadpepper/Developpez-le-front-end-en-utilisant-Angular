@@ -16,5 +16,12 @@
       "source.fixAll.eslint": "always"
     },
     "editor.formatOnSave": true
-  }
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    },
+    "editor.formatOnSave": true
+  },
 }
