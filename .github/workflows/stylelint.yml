@@ -1,4 +1,4 @@
-name: ESLint
+name: StyleLint
 
 on:
   push:
@@ -13,8 +13,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  eslint:
-    name: Run eslint scanning
+  stylelint:
+    name: Run stylelint scanning
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -41,17 +41,11 @@ jobs:
         env:
           CI: TRUE
 
-      - name: Run ESLint Json
-        run: npx ng lint
-          --format json
-          --output-file eslint_report.json
-          --silent
-          --quiet
-        continue-on-error: true
-
       - name: Annotate Code
-        uses: DerLev/eslint-annotations@v2
-        with:
-          error-on-warn: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          eslint-report: eslint_report.json
+        uses: xt0rted/stylelint-problem-matcher@v1
+
+      - name: Run Style Lint
+        run: npx stylelint "src/**/*.scss"
+          --config './.stylelintrc.json'
+          --max-warnings 0
+          --custom-formatter=stylelint-actions-formatters
