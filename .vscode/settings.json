@@ -26,5 +26,6 @@
   "eslint.validate": [
     "javascript",
     "typescript"
-  ]
+  ],
+  "html.format.unformattedContentDelimiter": "<!--noformat-->"
 }
