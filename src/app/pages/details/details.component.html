@@ -1,14 +1,27 @@
 <div class="center">
-  <h2 i18n>Page detail</h2>
+  <h1>{{ olympicCountry.country | titlecase }}</h1>
   <a routerLink="">retour</a>
+
+  <dl>
+    <dt i18n>{{ 'Number of entries' }}</dt>
+    <dd>{{ participations.length }}</dd>
+    <dt i18n>{{ 'Total number medals' }}</dt>
+    <dd>{{ getTotalMedals() }}</dd>
+    <dt i18n>{{ 'Total number of athletes' }}</dt>
+    <dd>{{ getTotalAthtletes() }}</dd>
+  </dl>
+
   <p i18n>details works!</p>
   <span>{{ olympicCountry.id }}</span>
   <span>{{ olympicCountry.country }}</span>
   <ul *ngFor="let participation of participations">
     <li><span>Id&nbsp;<span>{{ participation.id }}</span></span></li>
     <li><span>City&nbsp;<span>{{ participation.city }}</span></span></li>
-    <li><span>Nb atheletes&nbsp;<span>{{ participation.atheleteCount }}</span></span></li>
+    <li><span>Nb atheletes&nbsp;<span>{{ participation.athleteCount }}</span></span></li>
     <li><span>Year&nbsp;<span>{{ participation.year }}</span></span></li>
     <li><span>Nb medals&nbsp;<span>{{ participation.medalsCount }}</span></span></li>
   </ul>
 </div>
+<hr />
+
+<app-olympic-country-line-chart [participations]="participations" />

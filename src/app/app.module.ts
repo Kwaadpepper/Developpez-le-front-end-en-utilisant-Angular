@@ -5,8 +5,8 @@ import { TitleStrategy } from '@angular/router'
 import { NgApexchartsModule } from 'ng-apexcharts'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
-import { OlympicBarChartComponent } from './components/can-display-olympic-countries/olympic-bar-chart/olympic-bar-chart.component'
-import { OlympicPieChartComponent } from './components/can-display-olympic-countries/olympic-pie-chart/olympic-pie-chart.component'
+import { OlympicCountryLineChartComponent } from './components/olympic-country-line-chart/olympic-country-line-chart.component'
+import { OlympicPieChartComponent } from './components/olympic-pie-chart/olympic-pie-chart.component'
 import { DynamicTitleStrategy } from './core/DynamicTitleStrategy'
 import { ErrorHandler } from './core/ErrorHandler'
 import { DetailsComponent } from './pages/details/details.component'
@@ -24,7 +24,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component'
     BrowserModule,
     AppRoutingModule,
     OlympicPieChartComponent,
-    OlympicBarChartComponent,
+    OlympicCountryLineChartComponent,
     NgApexchartsModule,
   ],
   providers: [

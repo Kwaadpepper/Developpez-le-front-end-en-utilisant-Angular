@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { ActivatedRoute } from '@angular/router'
+import { cloneDeep } from 'lodash-es'
 import OlympicCountry from 'src/app/core/models/OlympicCountry'
 import Participation from 'src/app/core/models/Participation'
 
@@ -14,13 +15,31 @@ export class DetailsComponent implements OnInit {
   public participations: Participation[] = []
 
   constructor(private titleService: Title, private route: ActivatedRoute) {
-    this.olympicCountry = this.route.snapshot.data['olympicCountryId']
+    this.olympicCountry = cloneDeep(this.route.snapshot.data['olympicCountryId'])
     this.titleService.setTitle($localize`${this.olympicCountry.country} details`)
   }
 
   ngOnInit(): void {
-    console.debug(this.olympicCountry)
+    this.reloadResults()
+  }
+
+  /** Total of all medals ever won for this country */
+  getTotalMedals(): number {
+    return this.participations
+      .map(participation => participation.medalsCount)
+      .reduce((prev, curr) => prev + curr)
+  }
+
+  /** Total of presented athletes of all participations for this country */
+  getTotalAthtletes(): number {
+    return this.participations
+      .map(participation => participation.athleteCount)
+      .reduce((prev, curr) => prev + curr)
+  }
+
+  reloadResults(): void {
+    this.participations = []
     this.participations = this.olympicCountry.participations
-    console.debug(this.olympicCountry)
+    console.log('reload')
   }
 }

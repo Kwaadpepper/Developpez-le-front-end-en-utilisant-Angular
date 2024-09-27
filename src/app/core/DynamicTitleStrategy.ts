@@ -8,7 +8,7 @@ export class DynamicTitleStrategy extends TitleStrategy {
     super()
   }
 
-  override updateTitle(routerState: RouterStateSnapshot) {
+  override updateTitle(routerState: RouterStateSnapshot): void {
     const title = this.buildTitle(routerState) ?? this.title.getTitle()
     const appName = $localize`Olympic Games App`
 

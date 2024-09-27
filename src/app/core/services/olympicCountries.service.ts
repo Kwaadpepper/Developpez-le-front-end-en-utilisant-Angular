@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, signal } from '@angular/core'
 import { cloneDeep } from 'lodash-es'
+import { Subscription } from 'rxjs'
 import OlympicCountry from '../models/OlympicCountry'
 
 export type OlympicCountriesServiceData = OlympicCountry[]
@@ -18,7 +19,7 @@ export class OlympicService {
 
   constructor(private http: HttpClient) {}
 
-  loadCountryList() {
+  loadCountryList(): Subscription {
     return this.http.get<OlympicCountriesServiceData>(this.olympicUrl).subscribe({
       next: dataResponse => this.olympicCountries.set(dataResponse),
       error: (error) => {

@@ -4,21 +4,13 @@ import { Router } from '@angular/router'
 import OlympicCountry from 'src/app/core/models/OlympicCountry'
 import { OlympicService } from 'src/app/core/services/olympicCountries.service'
 
-export enum HomeDisplayableGraphType {
-  PIE,
-  BAR,
-}
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  HomeDisplayableGraphType = HomeDisplayableGraphType
-
   public olympicCountries: OlympicCountry[]
-  public graphTypeToDisplay: HomeDisplayableGraphType
 
   constructor(
     private titleService: Title,
@@ -26,7 +18,6 @@ export class HomeComponent implements OnInit {
     private olympicService: OlympicService,
   ) {
     this.olympicCountries = []
-    this.graphTypeToDisplay = HomeDisplayableGraphType.PIE
 
     this.titleService.setTitle($localize`Medals per Country`)
     // * Listen for signal changes
@@ -39,15 +30,11 @@ export class HomeComponent implements OnInit {
     this.reloadResults()
   }
 
-  displayStatsForAnOlympicCountry(olympicCountry: OlympicCountry) {
+  onSelectAnOlympicCountryStats(olympicCountry: OlympicCountry): void {
     this.router.navigateByUrl(`details/${olympicCountry.id}`)
   }
 
-  reloadResults() {
+  reloadResults(): void {
     this.olympicService.loadCountryList()
-  }
-
-  setGraphTypeToDisplay(type: typeof this.graphTypeToDisplay) {
-    this.graphTypeToDisplay = type
   }
 }

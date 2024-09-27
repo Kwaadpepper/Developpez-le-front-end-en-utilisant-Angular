@@ -27,6 +27,7 @@
     "color-no-invalid-hex": true,
     "order/properties-alphabetical-order": null,
     "selector-max-compound-selectors": 5,
+    "max-nesting-depth": 5,
     "scss/double-slash-comment-empty-line-before": [
       "always",
       {

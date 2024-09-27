@@ -33,3 +33,9 @@ Good luck!
 ### Compatibilité avec les navigateurs
 
 - [Audience coverage: 88.8 %](https://browsersl.ist/#q=%3E0.3%25%2C+last+2+Chrome+versions%2C+last+1+Firefox+version%2C+last+2+Edge+major+versions%2C+last+2+Safari+major+versions%2C+last+2+iOS+major+versions%2C+Firefox+ESR%2C+not+dead)
+
+## TODO
+
+- Pas de switch, un seul graphique par page
+- Utiliser Observable , BehaviorSubject.
+- Styler et responsive

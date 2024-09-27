@@ -12,7 +12,7 @@ export default abstract class OlympicConfig {
     '#ad6886',
   ]
 
-  public static getColors() {
+  public static getColors(): Color[] {
     return OlympicConfig.chartColors
   }
 }
