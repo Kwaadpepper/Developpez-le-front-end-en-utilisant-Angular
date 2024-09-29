@@ -1,5 +1,5 @@
 import { provideHttpClient } from '@angular/common/http'
-import { LOCALE_ID, ErrorHandler as NgErrorHandler, NgModule } from '@angular/core'
+import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, ErrorHandler as NgErrorHandler, NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { TitleStrategy } from '@angular/router'
 import { NgApexchartsModule } from 'ng-apexcharts'
@@ -27,6 +27,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component'
     OlympicCountryLineChartComponent,
     NgApexchartsModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     provideHttpClient(),
     {
