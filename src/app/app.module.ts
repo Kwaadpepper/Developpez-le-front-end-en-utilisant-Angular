@@ -1,5 +1,5 @@
 import { provideHttpClient } from '@angular/common/http'
-import { ErrorHandler as NgErrorHandler, NgModule } from '@angular/core'
+import { LOCALE_ID, ErrorHandler as NgErrorHandler, NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { TitleStrategy } from '@angular/router'
 import { NgApexchartsModule } from 'ng-apexcharts'
@@ -29,6 +29,9 @@ import { NotFoundComponent } from './pages/not-found/not-found.component'
   ],
   providers: [
     provideHttpClient(),
+    {
+      provide: LOCALE_ID, useValue: 'EN-en',
+    },
     { provide: NgErrorHandler, useClass: ErrorHandler },
     { provide: TitleStrategy, useClass: DynamicTitleStrategy },
   ],
