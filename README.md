@@ -29,7 +29,7 @@ It will potentially be addressed soon:
 
 ### Browser compatibility
 
-- [Audience coverage: 88.8 %](https://browsersl.ist/#q=%3E0.3%25%2C+last+2+Chrome+versions%2C+last+1+Firefox+version%2C+last+2+Edge+major+versions%2C+last+2+Safari+major+versions%2C+last+2+iOS+major+versions%2C+Firefox+ESR%2C+not+dead)
+- [Audience coverage: 88.8%](https://browsersl.ist/#q=%3E0.3%25%2C+last+2+Chrome+versions%2C+last+1+Firefox+version%2C+last+2+Edge+major+versions%2C+last+2+Safari+major+versions%2C+last+2+iOS+major+versions%2C+Firefox+ESR%2C+not+dead)
 
 ### Mock data
 
@@ -63,7 +63,7 @@ It will potentially be addressed soon:
 
 ## Notes
 
-- There is one warning on build about a shoelace rule `sl-toast-stack`, you can safely ignore it as we do not make use of it.
+- There is one warning on build about a shoelace rule `sl-toast-stack` : `Pseudo-elements are not supported by css-select`, you can safely ignore it.
 
 ## TODO
 
