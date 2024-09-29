@@ -8,9 +8,10 @@ import { OlympicService } from './core/services/olympicCountries.service'
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  constructor(private olympicService: OlympicService) { }
-
   private olympicServiceSub: Subscription | null = null
+
+  constructor(private olympicService: OlympicService) {
+  }
 
   ngOnInit(): void {
     this.olympicServiceSub = this.olympicService.loadCountryList()
