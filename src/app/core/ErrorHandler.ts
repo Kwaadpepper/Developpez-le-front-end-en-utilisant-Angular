@@ -1,12 +1,18 @@
-import { ErrorHandler as NgErrorHanlder } from '@angular/core'
+import { Injectable, ErrorHandler as NgErrorHanlder } from '@angular/core'
+import { ToastService } from './services/toast.service'
 
+@Injectable()
 export class ErrorHandler implements NgErrorHanlder {
-  // Forced type any from core/angular
+  constructor(private toastService: ToastService) {}
+
+  // NOTE: Forced type any from core/angular
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleError(error: any): void {
     if (error instanceof Error) {
-      // TODO: show toast error
-      console.error('Sorry an error occured', error?.message)
+      // ! Unmanaged error occured
+      const message = $localize`Sorry an error occured`
+      console.error(message, error?.message)
+      this.toastService.error(message)
     }
     console.debug(error)
   }
