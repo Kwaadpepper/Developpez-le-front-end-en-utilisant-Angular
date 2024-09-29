@@ -15,7 +15,7 @@ export class DetailsComponent implements OnInit {
   public participations: Participation[] = []
 
   constructor(private titleService: Title, private route: ActivatedRoute) {
-    this.olympicCountry = cloneDeep(this.route.snapshot.data['olympicCountryId'])
+    this.olympicCountry = cloneDeep(this.route.snapshot.data['olympicCountry'])
     this.titleService.setTitle($localize`${this.olympicCountry.country} details`)
   }
 

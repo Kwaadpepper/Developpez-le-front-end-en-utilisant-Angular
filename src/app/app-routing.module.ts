@@ -11,10 +11,10 @@ export const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'details/:olympicCountryId',
+    path: 'details/:olympicCountry',
     component: DetailsComponent,
     resolve: {
-      olympicCountryId: olympicCountryResolver,
+      olympicCountry: olympicCountryResolver,
     },
   },
   {

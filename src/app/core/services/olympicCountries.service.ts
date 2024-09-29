@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
-import { Injectable, signal } from '@angular/core'
+import { Injectable } from '@angular/core'
 import { cloneDeep } from 'lodash-es'
-import { BehaviorSubject, catchError, Observable, tap } from 'rxjs'
+import { BehaviorSubject, catchError, Observable, Subject, tap } from 'rxjs'
 import OlympicCountry from '../models/OlympicCountry'
 import { ToastService } from './toast.service'
 
@@ -16,8 +16,11 @@ export class OlympicService {
   /** Unique source of data for now */
   private olympicUrl = './assets/mock/generated.json'
   /** Fetch list of olympic countries */
-  private olympicCountries = signal<OlympicCountriesServiceData>([])
-  private olympics$ = new BehaviorSubject<OlympicCountriesServiceData>([])
+  private olympicCountries$ = new BehaviorSubject<OlympicCountriesServiceData>([])
+
+  private olympicCountries: OlympicCountriesServiceData = []
+
+  private olympicCountry$ = new Subject<OlympicCountryServiceData>()
 
   constructor(
     private http: HttpClient,
@@ -29,11 +32,15 @@ export class OlympicService {
     return this.http
       .get<OlympicCountriesServiceData>(this.olympicUrl)
       .pipe(
-        tap(value => this.olympics$.next(value)),
+        tap((value) => {
+          // * Per
+          this.olympicCountries = value
+          this.olympicCountries$.next(cloneDeep(value))
+        }),
         catchError((error, caught) => {
           this.toastService.error($localize`Error while fetching olympic countries from server`)
           console.debug(error)
-          this.olympics$.next([])
+          this.olympicCountries$.next([])
           return caught
         }),
       )
@@ -41,16 +48,21 @@ export class OlympicService {
 
   /** Get the olympic country list */
   getOlympicCountries(): Observable<OlympicCountriesServiceData> {
-    return this.olympics$.asObservable()
+    return this.olympicCountries$.asObservable()
   }
 
   /** Get a specific olympic country */
-  getOlympicCountry(id: number): OlympicCountryServiceData | null {
-    for (const olympicCountry of this.olympicCountries()) {
-      if (olympicCountry.id === id) {
-        return cloneDeep(olympicCountry)
+  getOlympicCountry(id: number): Observable<OlympicCountryServiceData> {
+    // * Simulate async call so we could replace it with a server call
+    setTimeout(() => {
+      const olympicCountry = this.olympicCountries.find(olympicCountry => olympicCountry.id === id)
+      console.log(`get '${id}'`, olympicCountry, this.olympicCountries)
+      if (olympicCountry === undefined) {
+        this.olympicCountry$.error(`Olympic country id '${id}' not found`)
+        return
       }
-    }
-    return null
+      this.olympicCountry$.next(olympicCountry)
+    }, 200)
+    return this.olympicCountry$.asObservable()
   }
 }
