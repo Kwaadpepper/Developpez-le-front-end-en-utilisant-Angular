@@ -1,5 +1,5 @@
 @use 'vars' as vars;
-@use '@acab/reset.css';
+@import 'modern-normalize';
 
 * {
   font-family: vars.$default-font-family;
