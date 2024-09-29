@@ -1,0 +1,88 @@
+$shoe-spacings: (
+  1: '3x-small',
+  2: '2x-small',
+  3: 'x-small',
+  4: 'small',
+  5: 'medium',
+  6: 'large',
+  7: 'x-large',
+  8: '2x-large',
+  9: '3x-large',
+  10: '4x-large',
+);
+
+.mx-auto {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
+.my-auto {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
+
+.mt-auto {
+  margin-top: auto !important;
+}
+
+.mb-auto {
+  margin-bottom: auto !important;
+}
+
+.me-auto {
+  margin-right: auto !important;
+}
+
+.ms-auto {
+  margin-left: auto !important;
+}
+
+@each $prefix, $size in $shoe-spacings {
+  .p-#{$prefix} {
+    padding: var(--sl-spacing-#{$size}) !important;
+  }
+  .px-#{$prefix} {
+    padding-right: var(--sl-spacing-#{$size}) !important;
+    padding-left: var(--sl-spacing-#{$size}) !important;
+  }
+  .py-#{$prefix} {
+    padding-top: var(--sl-spacing-#{$size}) !important;
+    padding-bottom: var(--sl-spacing-#{$size}) !important;
+  }
+  .pt-#{$prefix} {
+    padding-top: var(--sl-spacing-#{$size}) !important;
+  }
+  .pb-#{$prefix} {
+    padding-bottom: var(--sl-spacing-#{$size}) !important;
+  }
+  .pe-#{$prefix} {
+    padding-right: var(--sl-spacing-#{$size}) !important;
+  }
+  .ps-#{$prefix} {
+    padding-left: var(--sl-spacing-#{$size}) !important;
+  }
+  .m-#{$prefix} {
+    margin: var(--sl-spacing-#{$size}) !important;
+  }
+  .mx-#{$prefix} {
+    margin-right: var(--sl-spacing-#{$size}) !important;
+    margin-left: var(--sl-spacing-#{$size}) !important;
+  }
+  .my-#{$prefix} {
+    margin-top: var(--sl-spacing-#{$size}) !important;
+    margin-bottom: var(--sl-spacing-#{$size}) !important;
+  }
+  .mt-#{$prefix} {
+    margin-top: var(--sl-spacing-#{$size}) !important;
+  }
+  .mb-#{$prefix} {
+    margin-bottom: var(--sl-spacing-#{$size}) !important;
+  }
+  .me-#{$prefix} {
+    margin-right: var(--sl-spacing-#{$size}) !important;
+  }
+  .ms-#{$prefix} {
+    margin-left: var(--sl-spacing-#{$size}) !important;
+  }
+}

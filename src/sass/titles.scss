@@ -1,0 +1,36 @@
+@use 'vars' as vars;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: vars.$title-color;
+  font-family: vars.$title-font-family;
+  font-weight: var(--sl-font-weight-semibold);
+}
+
+h1 {
+  font-size: var(--sl-font-size-3x-large);
+}
+
+h2 {
+  font-size: var(--sl-font-size-2x-large);
+}
+
+h3 {
+  font-size: var(--sl-font-size-x-large);
+}
+
+h4 {
+  font-size: var(--sl-font-size-large);
+}
+
+h5 {
+  font-size: var(--sl-font-size-medium);
+}
+
+h6 {
+  font-size: var(--sl-font-size-small);
+}

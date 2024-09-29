@@ -1,0 +1,13 @@
+@use 'sass';
+
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+
+  app-root {
+    display: block;
+    height: 100vh;
+    margin: 0;
+  }
+}
