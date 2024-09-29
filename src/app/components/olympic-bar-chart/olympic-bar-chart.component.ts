@@ -1,7 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core'
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts'
-import OlympicCountry from 'src/app/core/models/OlympicCountry'
-import Participation from 'src/app/core/models/Participation'
+import OlympicCountry from 'src/app/core/models/olympic-country.interface'
+import Participation from 'src/app/core/models/participation.interface'
 import OlympicConfig from 'src/app/core/OlympicConfig'
 
 /** A selected data of an apex pie chart */
@@ -34,8 +34,8 @@ const chartFontStepRatio = 0.05
   selector: 'app-olympic-pie-chart',
   standalone: true,
   imports: [NgApexchartsModule],
-  templateUrl: './olympic-pie-chart.component.html',
-  styleUrl: './olympic-pie-chart.component.scss',
+  templateUrl: './olympic-bar-chart.component.html',
+  styleUrl: './olympic-bar-chart.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 

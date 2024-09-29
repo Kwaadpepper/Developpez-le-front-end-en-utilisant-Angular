@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { ActivatedRoute } from '@angular/router'
 import { cloneDeep } from 'lodash-es'
-import OlympicCountry from 'src/app/core/models/OlympicCountry'
-import Participation from 'src/app/core/models/Participation'
+import OlympicCountry from 'src/app/core/models/olympic-country.interface'
+import Participation from 'src/app/core/models/participation.interface'
 
 @Component({
   selector: 'app-details',
@@ -40,6 +40,5 @@ export class DetailsComponent implements OnInit {
   reloadResults(): void {
     this.participations = []
     this.participations = this.olympicCountry.participations
-    console.log('reload')
   }
 }

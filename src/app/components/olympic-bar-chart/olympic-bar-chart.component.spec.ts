@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { OlympicPieChartComponent } from './olympic-pie-chart.component'
+import { OlympicPieChartComponent } from './olympic-bar-chart.component'
 
 describe('PieChartComponent', () => {
   let component: OlympicPieChartComponent

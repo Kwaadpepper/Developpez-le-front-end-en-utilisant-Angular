@@ -1,4 +1,4 @@
-import Participation from './Participation'
+import Participation from './participation.interface'
 
 /**
  * Data incomming from a web service

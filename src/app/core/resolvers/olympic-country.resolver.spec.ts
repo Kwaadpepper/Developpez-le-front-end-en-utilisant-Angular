@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing'
 import { ResolveFn } from '@angular/router'
 
-import { olympicCountryResolver } from './olympicCountry.resolver'
+import OlympicCountry from '../models/olympic-country.interface'
+import { olympicCountryResolver } from './olympic-country.resolver'
 
 describe('olympicCountryResolver', () => {
-  const executeResolver: ResolveFn<boolean> = (...resolverParameters) =>
+  const executeResolver: ResolveFn<OlympicCountry | null> = (...resolverParameters) =>
     TestBed.runInInjectionContext(() => olympicCountryResolver(...resolverParameters))
 
   beforeEach(() => {

@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { Router } from '@angular/router'
-import { Observable, of, Subscription } from 'rxjs'
-import OlympicCountry from 'src/app/core/models/OlympicCountry'
-import { OlympicCountriesServiceData, OlympicService } from 'src/app/core/services/olympicCountries.service'
+import { Observable, of, Subscription, take } from 'rxjs'
+import OlympicCountry from 'src/app/core/models/olympic-country.interface'
+import { OlympicCountriesServiceData, OlympicService } from 'src/app/core/services/olympic-countries.service'
 
 @Component({
   selector: 'app-home',
@@ -12,9 +12,11 @@ import { OlympicCountriesServiceData, OlympicService } from 'src/app/core/servic
 })
 export class HomeComponent implements OnInit, OnDestroy {
   public olympicCountries$: Observable<OlympicCountriesServiceData> = of([])
-  private olympicCountries$Sub: Subscription | null = null
 
   public olympicCountries: OlympicCountry[] = []
+  public canTryToReloadData = false
+
+  private olympicCountries$Sub: Subscription | null = null
 
   constructor(
     private titleService: Title,
@@ -27,13 +29,23 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.olympicCountries$ = this.olympicService.getOlympicCountries()
     this.olympicCountries$Sub = this.olympicCountries$.subscribe({
       next: (value: OlympicCountriesServiceData): void => {
+        this.canTryToReloadData = false
         this.olympicCountries = value
+      },
+      error: () => {
+        this.canTryToReloadData = true
       },
     })
   }
 
   ngOnDestroy(): void {
     this.olympicCountries$Sub?.unsubscribe()
+  }
+
+  onTryToReload(): void {
+    this.olympicService.loadInitialData()
+      .pipe(take(1))
+      .subscribe()
   }
 
   onSelectAnOlympicCountryStats(olympicCountry: OlympicCountry): void {

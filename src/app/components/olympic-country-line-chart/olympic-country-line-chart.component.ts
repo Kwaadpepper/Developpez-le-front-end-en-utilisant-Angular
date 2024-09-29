@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts'
-import Participation from 'src/app/core/models/Participation'
+import Participation from 'src/app/core/models/participation.interface'
 import OlympicConfig from 'src/app/core/OlympicConfig'
 
 @Component({
