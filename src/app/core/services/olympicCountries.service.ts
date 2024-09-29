@@ -13,7 +13,7 @@ export type OlympicCountryServiceData = OlympicCountry
 
 export class OlympicService {
   /** Unique source of data for now */
-  private olympicUrl = './assets/mock/olympic.json'
+  private olympicUrl = './assets/mock/generated.json'
   /** Fetch list of olympic countries */
   private olympicCountries = signal<OlympicCountriesServiceData>([])
 
