@@ -1,1 +1,7 @@
-// Nothing for now
+@use 'vars' as vars;
+
+@media only screen and (max-width: vars.$breakpoint-large) {
+  .chart-container {
+    width: 100% !important;
+  }
+}

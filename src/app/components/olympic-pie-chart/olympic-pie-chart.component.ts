@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core'
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core'
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts'
 import OlympicCountry from 'src/app/core/models/OlympicCountry'
 import Participation from 'src/app/core/models/Participation'
@@ -40,7 +40,7 @@ const chartFontStepRatio = 0.05
 })
 
 /** Apex PieChartComponent wrapper */
-export class OlympicPieChartComponent implements OnInit, OnChanges {
+export class OlympicPieChartComponent implements OnInit, OnDestroy, OnChanges {
   @Input({ required: true }) olympicCountries: OlympicCountry[] = []
 
   @Output() selected = new EventEmitter<OlympicCountry>()
@@ -160,6 +160,12 @@ export class OlympicPieChartComponent implements OnInit, OnChanges {
     this.refreshChartWith(this.olympicCountries)
   }
 
+  ngOnDestroy(): void {
+    this.chartOptions = {}
+    this.olympicCountries = []
+    this.originalIndexes = []
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['olympicCountries']) {
       const countries: OlympicCountry[] = changes['olympicCountries'].currentValue
@@ -275,6 +281,9 @@ export class OlympicPieChartComponent implements OnInit, OnChanges {
     }]
   }
 
+  /**
+   * Olympic country sorter function
+   */
   private sortOlympicCountries(a: OlympicCountry, b: OlympicCountry): number {
     switch (this.sortByMedals) {
       case SortWay.ascending: return this.sumTotalMedalsForAll(a.participations)
@@ -344,6 +353,10 @@ export class OlympicPieChartComponent implements OnInit, OnChanges {
     this.chartOptions.responsive!.at(0)!.options!.dataLabels.enabled = this.canAddMedalsCountToApexYLabels
   }
 
+  /**
+   * Adapt chart fonts settings using ratio
+   * @param chartFontStepRatio
+   */
   private adaptChartFontsSettingsWith(chartFontStepRatio: number): void {
     const getFontUsingRatio = (pixels: string): string =>
       `${Math.ceil(chartFontStepRatio * Number.parseInt(pixels))}px`

@@ -8,16 +8,15 @@ import { OlympicService } from './core/services/olympicCountries.service'
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private olympicServiceSub: Subscription | null = null
+  private olympic$Sub: Subscription | null = null
 
-  constructor(private olympicService: OlympicService) {
-  }
+  constructor(private olympicService: OlympicService) {}
 
   ngOnInit(): void {
-    this.olympicServiceSub = this.olympicService.loadCountryList()
+    this.olympic$Sub = this.olympicService.loadInitialData().subscribe()
   }
 
   ngOnDestroy(): void {
-    this.olympicServiceSub?.unsubscribe()
+    this.olympic$Sub?.unsubscribe()
   }
 }
