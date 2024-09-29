@@ -4,8 +4,8 @@ import { registerLocaleData } from '@angular/common'
 import * as en from '@angular/common/locales/en'
 import { enableProdMode } from '@angular/core'
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
-import '@shoelace-style/shoelace/dist/shoelace.js'
 import { AppModule } from './app/app.module'
+import './dependencies'
 import { environment } from './environments/environment'
 
 if (environment.production) {
