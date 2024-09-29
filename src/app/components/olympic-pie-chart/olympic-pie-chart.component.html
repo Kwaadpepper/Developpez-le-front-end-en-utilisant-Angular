@@ -1,9 +1,22 @@
+<div class="center-toolbar">
+  <sl-button-group>
+    <sl-button (click)="onSortCountriesByMedals()">Sort by medals</sl-button>
+    <sl-button (click)="onZoomIn();$event.stopPropagation();">Zoom In</sl-button>
+    <sl-button (click)="onZoomOut();$event.stopPropagation();">Zoom Out</sl-button>
+  </sl-button-group>
+</div>
 <!--noformat-->
 <apx-chart
-  [labels]="chartOptions.labels"
-  [series]="chartOptions.series"
+  class="olympic-pie-chart"
   [chart]="chartOptions.chart"
-  [title]="chartOptions.title"
   [colors]="chartOptions.colors"
   [dataLabels]="chartOptions.dataLabels"
+  [noData]="chartOptions.noData"
+  [labels]="chartOptions.labels"
+  [legend]="chartOptions.legend"
+  [plotOptions]="chartOptions.plotOptions"
+  [series]="chartOptions.series"
+  [responsive]="chartOptions.responsive"
+  [yaxis]="chartOptions.yaxis"
 />
+<!--noformat-->
