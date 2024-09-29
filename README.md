@@ -61,6 +61,10 @@ It will potentially be addressed soon:
 
 *source :* <https://olympics.com/en/news/paris-2024-olympics-full-list-ioc-national-olympic-committee-codes>
 
+## Notes
+
+- There is one warning on build about a shoelace rule `sl-toast-stack`, you can safely ignore it as we do not make use of it.
+
 ## TODO
 
 - Pas de switch, un seul graphique par page
