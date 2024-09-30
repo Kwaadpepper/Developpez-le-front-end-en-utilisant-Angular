@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core'
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core'
 import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
 import OlympicCountry from 'src/app/core/models/olympic-country.interface'
 import Participation from 'src/app/core/models/participation.interface'
@@ -41,7 +41,7 @@ const chartFontStepRatio = 0.05
 })
 
 /** Apex PieChartComponent wrapper */
-export class OlympicPieChartComponent implements OnInit, OnDestroy, OnChanges {
+export class OlympicPieChartComponent implements OnDestroy, OnChanges {
   @ViewChild('chart', { static: false }) chart?: ChartComponent
 
   @Input({ required: true }) olympicCountries: OlympicCountry[] = []
@@ -159,10 +159,6 @@ export class OlympicPieChartComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnInit(): void {
-    this.refreshChartWith(this.olympicCountries)
-  }
-
   ngOnDestroy(): void {
     this.chartOptions = {}
     this.olympicCountries = []
@@ -180,13 +176,13 @@ export class OlympicPieChartComponent implements OnInit, OnDestroy, OnChanges {
       this.originalIndexes = countries.map(country => country.id)
       // NOTE: Apex emits a warning if there are too many items to display using bar chart, 100 is the limit on apex's code
       this.canAddMedalsCountToApexYLabels = this.olympicCountries.length < 100
-      this.refreshChartWith(countries)
+      this.forceChartRender()
     }
   }
 
   @HostListener('window:resize')
   onViewPortResize(): void {
-    this.refreshChartWith(this.olympicCountries)
+    this.forceChartRender()
   }
 
   onSortCountriesByMedals(): void {
@@ -206,7 +202,7 @@ export class OlympicPieChartComponent implements OnInit, OnDestroy, OnChanges {
       sortWays.push(tmp)
     } while (++i < sortWayIdx)
     this.sortByMedals = sortWays.at(0) ?? SortWay.natural
-    this.refreshChartWith(this.olympicCountries)
+    this.forceChartRender()
   }
 
   onZoomIn(): void {
@@ -226,7 +222,7 @@ export class OlympicPieChartComponent implements OnInit, OnDestroy, OnChanges {
       this.chartHeightPerCountryRatio !== originalRatio
       || this.chartfontRatio !== originalFontRatio
     ) {
-      this.refreshChartWith(this.olympicCountries)
+      this.forceChartRender()
     }
   }
 
@@ -247,8 +243,12 @@ export class OlympicPieChartComponent implements OnInit, OnDestroy, OnChanges {
       this.chartHeightPerCountryRatio !== originalRatio
       || this.chartfontRatio !== originalFontRatio
     ) {
-      this.refreshChartWith(this.olympicCountries)
+      this.forceChartRender()
     }
+  }
+
+  forceChartRender(): void {
+    this.refreshChartWith(this.olympicCountries)
   }
 
   private onSelectedCountryEvent(country: OlympicCountry): void {

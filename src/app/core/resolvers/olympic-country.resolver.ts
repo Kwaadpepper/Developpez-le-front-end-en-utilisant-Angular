@@ -1,6 +1,6 @@
 import { inject } from '@angular/core'
 import { RedirectCommand, ResolveFn, Router } from '@angular/router'
-import { map, Observable, of } from 'rxjs'
+import { map, Observable, of, take } from 'rxjs'
 import OlympicCountry from '../models/olympic-country.interface'
 import { OlympicService } from '../services/olympic-countries.service'
 
@@ -18,12 +18,14 @@ export const olympicCountryResolver: ResolveFn<OlympicCountry | RedirectCommand>
 
   return olympicCountry$
     // * Resolve the olympic country or Goto missing page
-    .pipe(map((olympicCountry) => {
-      if (olympicCountry !== null) {
-        return olympicCountry
-      }
+    .pipe(
+      take(1),
+      map((olympicCountry) => {
+        if (olympicCountry !== null) {
+          return olympicCountry
+        }
 
-      // * Goto missing page if not olympic country is found
-      return new RedirectCommand(urlTree, { skipLocationChange: true })
-    }))
+        // * Goto missing page if not olympic country is found
+        return new RedirectCommand(urlTree, { skipLocationChange: true })
+      }))
 }

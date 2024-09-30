@@ -6,7 +6,7 @@
     </div>
   </div>
 </div>
-<div class="container chart-container">
+<div *ngIf="olympicCountries$ | async as olympicCountries" class="container chart-container">
   <div class="row">
     <div class="col-12">
       <app-olympic-pie-chart ngModel #olympicPieChart [olympicCountries]="olympicCountries"

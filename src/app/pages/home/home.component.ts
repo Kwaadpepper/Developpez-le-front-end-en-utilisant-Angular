@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { Router } from '@angular/router'
-import { Observable, of, Subscription, take } from 'rxjs'
+import { catchError, delay, Observable, of, Subject, take, tap } from 'rxjs'
 import { OlympicPieChartComponent } from 'src/app/components/olympic-bar-chart/olympic-bar-chart.component'
 import OlympicCountry from 'src/app/core/models/olympic-country.interface'
-import { OlympicCountriesServiceData, OlympicService } from 'src/app/core/services/olympic-countries.service'
+import { OlympicService } from 'src/app/core/services/olympic-countries.service'
 
 @Component({
   selector: 'app-home',
@@ -13,12 +13,12 @@ import { OlympicCountriesServiceData, OlympicService } from 'src/app/core/servic
 })
 export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('olympicPieChart', { static: false }) pieChart!: OlympicPieChartComponent
-  public olympicCountries$: Observable<OlympicCountriesServiceData> = of([])
 
-  public olympicCountries: OlympicCountry[] = []
   public canTryToReloadData = false
 
-  private olympicCountries$Sub: Subscription | null = null
+  public olympicCountries$: Observable<OlympicCountry[]> = of([])
+
+  private destroyOlympicCountries$!: Subject<boolean>
 
   constructor(
     private titleService: Title,
@@ -28,20 +28,23 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.titleService.setTitle($localize`Medals per Country`)
-    this.olympicCountries$ = this.olympicService.getOlympicCountries()
-    this.olympicCountries$Sub = this.olympicCountries$.subscribe({
-      next: (value: OlympicCountriesServiceData): void => {
-        this.canTryToReloadData = false
-        this.olympicCountries = value
-      },
-      error: () => {
-        this.canTryToReloadData = true
-      },
-    })
+
+    this.destroyOlympicCountries$ = new Subject<boolean>()
+    this.olympicCountries$ = this.olympicService
+      .getOlympicCountries()
+      .pipe(
+        // ! Prevent modifying view while rendering
+        delay(0),
+        tap(countries => this.setCanTryReload(countries.length === 0)),
+        catchError((error, caught) => {
+          this.setCanTryReload(true)
+          return caught
+        }),
+      )
   }
 
   ngOnDestroy(): void {
-    this.olympicCountries$Sub?.unsubscribe()
+    this.destroyOlympicCountries$.next(true)
     this.pieChart.ngOnDestroy()
   }
 
@@ -53,5 +56,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onSelectAnOlympicCountryStats(olympicCountry: OlympicCountry): void {
     this.router.navigateByUrl(`details/${olympicCountry.id}`)
+  }
+
+  private setCanTryReload(canTry: boolean): void {
+    this.canTryToReloadData = canTry
   }
 }

@@ -1,37 +1,39 @@
 import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, OnDestroy } from '@angular/core'
 import { cloneDeep } from 'lodash-es'
-import { BehaviorSubject, catchError, Observable, Subject, tap } from 'rxjs'
+import { BehaviorSubject, catchError, Observable, Subject, take, tap } from 'rxjs'
 import OlympicCountry from '../models/olympic-country.interface'
 import { ToastService } from './toast.service'
-
-export type OlympicCountriesServiceData = OlympicCountry[]
-export type OlympicCountryServiceData = OlympicCountry
 
 @Injectable({
   providedIn: 'root',
 })
 
-export class OlympicService {
+export class OlympicService implements OnDestroy {
   // * Unique source of data for now
   private olympicUrl = './assets/mock/generated.json'
   // * Olympic countries fetcher
-  private olympicCountries$ = new BehaviorSubject<OlympicCountriesServiceData>([])
+  private olympicCountries$ = new BehaviorSubject<OlympicCountry[]>([])
   // * Olympic country fetcher
-  private olympicCountry$ = new Subject<OlympicCountryServiceData | null>()
+  private olympicCountry$ = new Subject<OlympicCountry | null>()
 
   // * Local pool of olympic countries
-  private olympicCountries: OlympicCountriesServiceData = []
+  private olympicCountries: OlympicCountry[] = []
 
   constructor(
     private http: HttpClient,
     private toastService: ToastService,
   ) { }
 
+  ngOnDestroy(): void {
+    this.olympicCountries$.next([])
+    this.olympicCountry$.next(null)
+  }
+
   /** Attempt to load olympic countries from server */
-  loadInitialData(): Observable<OlympicCountriesServiceData> {
+  loadInitialData(): Observable<OlympicCountry[]> {
     return this.http
-      .get<OlympicCountriesServiceData>(this.olympicUrl)
+      .get<OlympicCountry[]>(this.olympicUrl)
       .pipe(
         tap((value) => {
           // * Keep Countries to locally resolve a specific country
@@ -49,12 +51,12 @@ export class OlympicService {
   }
 
   /** Get the olympic country list */
-  getOlympicCountries(): Observable<OlympicCountriesServiceData> {
+  getOlympicCountries(): Observable<OlympicCountry[]> {
     return this.olympicCountries$.asObservable()
   }
 
   /** Get a specific olympic country */
-  getOlympicCountry(id: OlympicCountryServiceData['id']): Observable<OlympicCountryServiceData | null> {
+  getOlympicCountry(id: OlympicCountry['id']): Observable<OlympicCountry | null> {
     // * Resolve the olympic country afterward
     setTimeout(() => {
       // ? Do we have any country data ?
@@ -63,7 +65,10 @@ export class OlympicService {
         // * So Fetch countries from server
           .loadInitialData()
         // * Then look for the country
-          .pipe(tap(() => this.findOlympicCountry(id)))
+          .pipe(
+            take(1),
+            tap(() => this.findOlympicCountry(id)),
+          )
       }
       else {
       // ! Yes
@@ -76,7 +81,7 @@ export class OlympicService {
   }
 
   /** Look for the olympic country on our local repository */
-  private findOlympicCountry(id: OlympicCountryServiceData['id']): void {
+  private findOlympicCountry(id: OlympicCountry['id']): void {
     const olympicCountry = this.olympicCountries.find(olympicCountry => olympicCountry.id === id)
     this.olympicCountry$.next(olympicCountry ?? null)
   }
