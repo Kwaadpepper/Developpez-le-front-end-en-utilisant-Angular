@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts'
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core'
+import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
 import Participation from 'src/app/core/models/participation.interface'
-import OlympicConfig from 'src/app/core/OlympicConfig'
 
 @Component({
   selector: 'app-olympic-country-line-chart',
@@ -10,7 +9,9 @@ import OlympicConfig from 'src/app/core/OlympicConfig'
   templateUrl: './olympic-country-line-chart.component.html',
   styleUrl: './olympic-country-line-chart.component.scss',
 })
-export class OlympicCountryLineChartComponent implements OnInit {
+export class OlympicCountryLineChartComponent implements OnInit, OnDestroy {
+  @ViewChild('chart', { static: false }) chart?: ChartComponent
+
   @Input({ required: true }) participations: Participation[] = []
 
   public chartOptions: ApexOptions
@@ -19,27 +20,33 @@ export class OlympicCountryLineChartComponent implements OnInit {
     this.chartOptions = {
       chart: {
         type: 'line',
-        zoom: { enabled: false },
-        toolbar: { show: false },
+        // zoom: { enabled: false },
+        // toolbar: { show: false },
       },
-      grid: {
-        xaxis: {
-          lines: { show: true },
-        },
-        yaxis: {
-          lines: { show: true },
-        },
+      dataLabels: {
+        enabled: false,
       },
-      colors: OlympicConfig.getColors(),
+      // grid: {
+      //   row: {
+      //     colors: ['#2f31ae', 'transparent'],
+      //     opacity: 0.5,
+      //   },
+      //   xaxis: {
+      //     lines: { show: true },
+      //   },
+      //   yaxis: {
+      //     lines: { show: true },
+      //   },
+      // },
       labels: [
         $localize`Medals`,
       ],
       legend: { show: false, floating: false },
       series: [],
-      stroke: { curve: 'straight' },
-      title: {
-        text: '',
-      },
+      // stroke: { curve: 'straight' },
+      // title: {
+      //   text: '',
+      // },
       tooltip: {
         enabled: true,
         x: {
@@ -47,19 +54,19 @@ export class OlympicCountryLineChartComponent implements OnInit {
         },
       },
       xaxis: {
-        type: 'datetime',
-        labels: {
-          show: true,
-          datetimeUTC: false,
-          format: 'yyyy',
-        },
-        title: {
-          text: $localize`Dates`,
-          style: { cssClass: 'axis-x-title' },
-        },
-        tooltip: {
-          enabled: false,
-        },
+        // type: 'datetime',
+        // labels: {
+        //   show: true,
+        //   datetimeUTC: false,
+        //   format: 'yyyy',
+        // },
+        // title: {
+        //   text: $localize`Dates`,
+        //   style: { cssClass: 'axis-x-title' },
+        // },
+        // tooltip: {
+        //   enabled: false,
+        // },
       },
       yaxis: {
         min: 0,
@@ -83,25 +90,24 @@ export class OlympicCountryLineChartComponent implements OnInit {
     this.updatePieChartData(this.participations)
   }
 
+  ngOnDestroy(): void {
+    this.chart?.resetSeries()
+    this.chart?.destroy()
+    this.chart?.ngOnDestroy()
+
+    delete this.chart
+  }
+
   private updatePieChartData(participations: Participation[]): void {
-    this.chartOptions.series = []
-    this.chartOptions.series.push({
-      name: 'Medals this year',
-      type: 'line',
-      data: participations.map((participation: Participation) => {
-        return {
-          x: new Date(String(participation.year)),
-          y: participation.medalsCount,
-          // fill?: ApexFill;
-          // fillColor?: string;
-          // strokeColor?: string;
-          // meta?: any;
-          // goals?: any;
-          // barHeightOffset?: number;
-          // columnWidthOffset?: number;
-        }
-      }),
-    } as never)
+    this.chartOptions.xaxis!.categories = participations
+      .map((participation: Participation) => participation.year)
+    this.chartOptions.series = [
+      {
+        name: 'Medals this year',
+        type: 'line',
+        data: participations.map((participation: Participation) => participation.medalsCount),
+      } as never,
+    ]
   }
 
   private getMaxValueForMedals(): number {
