@@ -1,5 +1,5 @@
 import { provideHttpClient } from '@angular/common/http'
-import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, ErrorHandler as NgErrorHandler, NgModule } from '@angular/core'
+import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, ErrorHandler as NgErrorHandler, NgModule, provideExperimentalZonelessChangeDetection } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { TitleStrategy } from '@angular/router'
 import { NgApexchartsModule } from 'ng-apexcharts'
@@ -30,6 +30,9 @@ import { NotFoundComponent } from './pages/not-found/not-found.component'
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     provideHttpClient(),
+    // * This is needed for ApexChart to refresh
+    // SEE: https://github.com/apexcharts/ng-apexcharts/pull/358/commits/31979a48396130c760efd688cac948564197b698
+    provideExperimentalZonelessChangeDetection(),
     {
       provide: LOCALE_ID, useValue: 'EN-en',
     },

@@ -9,7 +9,8 @@
 <div class="container chart-container">
   <div class="row">
     <div class="col-12">
-      <app-olympic-pie-chart [olympicCountries]="olympicCountries" (selected)="onSelectAnOlympicCountryStats($event)" />
+      <app-olympic-pie-chart ngModel #olympicPieChart [olympicCountries]="olympicCountries"
+        (selected)="onSelectAnOlympicCountryStats($event)" />
     </div>
   </div>
 </div>

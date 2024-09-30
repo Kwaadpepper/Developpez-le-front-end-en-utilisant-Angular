@@ -1,5 +1,5 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core'
-import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts'
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core'
+import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
 import OlympicCountry from 'src/app/core/models/olympic-country.interface'
 import Participation from 'src/app/core/models/participation.interface'
 import OlympicConfig from 'src/app/core/OlympicConfig'
@@ -41,6 +41,8 @@ const chartFontStepRatio = 0.05
 
 /** Apex PieChartComponent wrapper */
 export class OlympicPieChartComponent implements OnInit, OnDestroy, OnChanges {
+  @ViewChild('chart', { static: false }) chart?: ChartComponent
+
   @Input({ required: true }) olympicCountries: OlympicCountry[] = []
 
   @Output() selected = new EventEmitter<OlympicCountry>()
@@ -164,6 +166,11 @@ export class OlympicPieChartComponent implements OnInit, OnDestroy, OnChanges {
     this.chartOptions = {}
     this.olympicCountries = []
     this.originalIndexes = []
+    this.chart?.resetSeries()
+    this.chart?.destroy()
+    this.chart?.ngOnDestroy()
+
+    delete this.chart
   }
 
   ngOnChanges(changes: SimpleChanges): void {
