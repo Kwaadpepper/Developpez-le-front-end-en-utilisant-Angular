@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core'
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core'
 import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
 import OlympicCountry from 'src/app/core/models/olympic-country.interface'
 import Participation from 'src/app/core/models/participation.interface'
@@ -37,6 +37,7 @@ const chartFontStepRatio = 0.05
   templateUrl: './olympic-bar-chart.component.html',
   styleUrl: './olympic-bar-chart.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  encapsulation: ViewEncapsulation.ShadowDom,
 })
 
 /** Apex PieChartComponent wrapper */

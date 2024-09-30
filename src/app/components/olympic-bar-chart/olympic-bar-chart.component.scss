@@ -4,3 +4,9 @@
   display: flex;
   justify-content: center;
 }
+
+.yaxis-country-label {
+  > tspan:nth-child(2) {
+    font-size: 0.85em !important;
+  }
+}
