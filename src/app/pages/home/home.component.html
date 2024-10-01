@@ -1,23 +1,28 @@
-<h2 i18n>Olympic games app</h2>
-<button (click)="reloadResults()" i18n>Reload Countries</button>
-<div>
-  <button (click)="setGraphTypeToDisplay(HomeDisplayableGraphType.PIE)" i18n>Pie</button>
-  <button (click)="setGraphTypeToDisplay(HomeDisplayableGraphType.BAR)" i18n>Bar</button>
+<div *ngIf="olympicCountries$ | async as olympicCountries" class="container chart-container">
+  <div class="row">
+    <div class="col-12 title-col mb-8">
+      <sl-button class="teal action-button ms-md-8" (click)="onTryToReload()" i18n>Try to reload</sl-button>
+      <h2 class="p-4 mx-auto" i18n>Medals per Country</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-6 flex-middle">
+      <div class="chart-fact me-md-6">
+        <h3 i18n>Number of JOs</h3>
+        <span>{{ numberOfJOs }}</span>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 flex-middle">
+      <div class="chart-fact ms-md-6">
+        <h3 i18n>Number of countries</h3>
+        <span>{{ olympicCountries.length }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <app-olympic-pie-chart ngModel #olympicPieChart [olympicCountries]="olympicCountries"
+        (selected)="onSelectAnOlympicCountryStats($event)" />
+    </div>
+  </div>
 </div>
-<hr />
-<!-- <div *ngFor="let countryStat of olympicCountries">
-  <span>ID&nbsp;<span>{{ countryStat.id }}</span></span><br>
-  <span>Country&nbsp;<span>{{ countryStat.country }}</span></span><br>
-  <span>Participations&nbsp;:</span><br>
-  <ul *ngFor="let participation of countryStat.participations">
-    <li><span>Id&nbsp;<span>{{ participation.id }}</span></span></li>
-    <li><span>City&nbsp;<span>{{ participation.city }}</span></span></li>
-    <li><span>Nb atheletes&nbsp;<span>{{ participation.atheleteCount }}</span></span></li>
-    <li><span>Year&nbsp;<span>{{ participation.year }}</span></span></li>
-    <li><span>Nb medals&nbsp;<span>{{ participation.medalsCount }}</span></span></li>
-  </ul>
-</div> -->
-<app-olympic-pie-chart *ngIf="graphTypeToDisplay === HomeDisplayableGraphType.PIE" [olympicCountries]="olympicCountries"
-  (selected)="displayStatsForAnOlympicCountry($event)"></app-olympic-pie-chart>
-<app-olympic-bar-chart *ngIf="graphTypeToDisplay === HomeDisplayableGraphType.BAR" [olympicCountries]="olympicCountries"
-  (selected)="displayStatsForAnOlympicCountry($event)"></app-olympic-bar-chart>

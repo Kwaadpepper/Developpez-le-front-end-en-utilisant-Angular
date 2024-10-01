@@ -1,14 +1,33 @@
-<div class="center">
-  <h2 i18n>Page detail</h2>
-  <a routerLink="">retour</a>
-  <p i18n>details works!</p>
-  <span>{{ olympicCountry.id }}</span>
-  <span>{{ olympicCountry.country }}</span>
-  <ul *ngFor="let participation of participations">
-    <li><span>Id&nbsp;<span>{{ participation.id }}</span></span></li>
-    <li><span>City&nbsp;<span>{{ participation.city }}</span></span></li>
-    <li><span>Nb atheletes&nbsp;<span>{{ participation.atheleteCount }}</span></span></li>
-    <li><span>Year&nbsp;<span>{{ participation.year }}</span></span></li>
-    <li><span>Nb medals&nbsp;<span>{{ participation.medalsCount }}</span></span></li>
-  </ul>
+<div class="container chart-container">
+  <div class="row">
+    <div class="col-12 title-col mb-8">
+      <sl-button class="teal action-button ms-md-8" routerLink="" i18n>Back</sl-button>
+      <h2 class="p-4 mx-auto">{{ olympicCountry.country | titlecase }}</h2>
+    </div>
+  </div>
+  <div class="row mb-5">
+    <div class="col-12 col-md-4 flex-middle">
+      <div class="chart-fact">
+        <h3 i18n>{{ 'Number of entries' }}</h3>
+        <span>{{ participations.length }}</span>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 flex-middle">
+      <div class="chart-fact">
+        <h3 i18n>{{ 'Total number medals' }}</h3>
+        <span>{{ getTotalMedals() }}</span>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 flex-middle">
+      <div class="chart-fact">
+        <h3 i18n>{{ 'Total number of athletes' }}</h3>
+        <span>{{ getTotalAthtletes() }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <app-olympic-country-line-chart [participations]="participations" />
+    </div>
+  </div>
 </div>

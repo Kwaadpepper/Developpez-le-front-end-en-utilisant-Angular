@@ -26,15 +26,20 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src"
+              ]
+            },
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/main.scss"
             ],
-            "scripts": [
-              "node_modules/apexcharts/dist/apexcharts.min.js"
+            "allowedCommonJsDependencies": [
+              "apexcharts"
             ]
           },
           "configurations": {

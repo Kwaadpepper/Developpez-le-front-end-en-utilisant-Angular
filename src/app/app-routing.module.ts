@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import { olympicCountryResolver } from './core/resolver/olympicCountry.resolver'
+import { olympicCountryResolver } from './core/resolvers/olympic-country.resolver'
 import { DetailsComponent } from './pages/details/details.component'
 import { HomeComponent } from './pages/home/home.component'
 import { NotFoundComponent } from './pages/not-found/not-found.component'
@@ -14,7 +14,7 @@ export const routes: Routes = [
     path: 'details/:olympicCountryId',
     component: DetailsComponent,
     resolve: {
-      olympicCountryId: olympicCountryResolver,
+      olympicCountry: olympicCountryResolver,
     },
   },
   {

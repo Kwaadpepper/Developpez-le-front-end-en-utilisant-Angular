@@ -1,12 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# ESLint is a tool for identifying and reporting on patterns
-# found in ECMAScript/JavaScript code.
-# More details at https://github.com/eslint/eslint
-# and https://eslint.org
-
 name: ESLint
 
 on:
@@ -14,6 +5,7 @@ on:
     branches:
       - main
       - "dashboard-integration"
+      - "details-integration"
   pull_request:
     # The branches below must be a subset of the branches above
     branches:
@@ -31,6 +23,7 @@ jobs:
       # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
       actions: read
       checks: write
+      pull-requests: read
 
     steps:
       - name: Checkout code
@@ -45,43 +38,20 @@ jobs:
       - name: Install Node Dependencies
         run: |
           npm ci
-          npm install @microsoft/eslint-formatter-sarif@3.1.0
         env:
           CI: TRUE
 
-      - name: Run ESLint Sarif
-        env:
-          SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
-        run: npx ng lint
-          --format @microsoft/eslint-formatter-sarif
-          --output-file eslint-results.sarif
-          --silent
-        continue-on-error: true
-
       - name: Run ESLint Json
-        env:
-          SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
         run: npx ng lint
           --format json
           --output-file eslint_report.json
           --silent
+          --quiet
         continue-on-error: true
 
-      - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Annotate Code
+        uses: DerLev/eslint-annotations@v2
         with:
-          sarif_file: eslint-results.sarif
-          wait-for-processing: true
-
-      - name: Annotate Code Linting Results
-        uses: ataylorme/eslint-annotate-action@v3
-        with:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          report-json: "eslint_report.json"
-
-      - name: Upload ESLint report
-        uses: actions/upload-artifact@v4
-        with:
-          name: eslint_report.json
-          path: eslint_report.json
-          retention-days: 5
+          error-on-warn: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          eslint-report: eslint_report.json

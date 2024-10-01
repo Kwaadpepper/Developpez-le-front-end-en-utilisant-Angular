@@ -1,20 +1,31 @@
 {
-  "eslint.validate": ["javascript", "typescript"],
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
   "[html]": {
-    "editor.defaultFormatter": "vscode.html-language-features",
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "always"
     },
+    "editor.defaultFormatter": "vscode.html-language-features",
+    "editor.formatOnSave": true
+  },
+  "[scss]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    },
+    "editor.defaultFormatter": "stylelint.vscode-stylelint",
     "editor.formatOnSave": true
   },
   "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "always"
     },
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.formatOnSave": true
-  }
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": [
+    "javascript",
+    "typescript"
+  ],
+  "html.format.unformattedContentDelimiter": "<!--noformat-->"
 }

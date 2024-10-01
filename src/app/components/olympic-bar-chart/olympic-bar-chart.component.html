@@ -1,0 +1,22 @@
+<div class="center-toolbar">
+  <sl-button-group>
+    <sl-button class="teal" (click)="onSortCountriesByMedals()">Sort by medals</sl-button>
+    <sl-button class="teal" (click)="onZoomIn();$event.stopPropagation();">Zoom In</sl-button>
+    <sl-button class="teal" (click)="onZoomOut();$event.stopPropagation();">Zoom Out</sl-button>
+  </sl-button-group>
+</div>
+<!--noformat-->
+<apx-chart
+  ngModel #chartComponent
+  class="olympic-pie-chart"
+  [chart]="chart"
+  [dataLabels]="dataLabels"
+  [labels]="labels"
+  [legend]="legend"
+  [plotOptions]="plotOptions"
+  [series]="series"
+  [responsive]="responsive"
+  [tooltip]="tooltip"
+  [yaxis]="yaxis"
+/>
+<!--noformat-->

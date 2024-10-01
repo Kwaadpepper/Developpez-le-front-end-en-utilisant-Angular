@@ -16,6 +16,7 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
+      "@typescript-eslint/explicit-function-return-type": "error",
       "@angular-eslint/directive-selector": [
         "error",
         {

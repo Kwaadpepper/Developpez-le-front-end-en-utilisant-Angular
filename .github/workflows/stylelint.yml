@@ -1,0 +1,51 @@
+name: StyleLint
+
+on:
+  push:
+    branches:
+      - main
+      - "dashboard-integration"
+      - "details-integration"
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  stylelint:
+    name: Run stylelint scanning
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # required for all workflows
+      security-events: write
+      # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+      actions: read
+      checks: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Node Dependencies
+        run: |
+          npm ci
+        env:
+          CI: TRUE
+
+      - name: Annotate Code
+        uses: xt0rted/stylelint-problem-matcher@v1
+
+      - name: Run Style Lint
+        run: npx stylelint "src/**/*.scss"
+          --config './.stylelintrc.json'
+          --max-warnings 0
+          --custom-formatter=stylelint-actions-formatters

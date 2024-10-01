@@ -1,0 +1,112 @@
+@use 'sass:math';
+@use 'vars' as vars;
+
+html,
+body {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin-right: auto;
+  margin-left: auto;
+
+  @media only screen and (min-width: vars.$breakpoint-sm) {
+    width: 80%;
+  }
+
+  @media only screen and (min-width: vars.$breakpoint-lg) {
+    width: 75%;
+    max-width: 60rem;
+  }
+}
+
+.container-fluid {
+  display: block;
+  width: 100%;
+}
+
+.row {
+  position: relative;
+  width: 100%;
+}
+
+.row [class^='col'] {
+  min-height: 0.125rem;
+  margin: 0.5rem 2%;
+  float: left;
+}
+
+.row::after {
+  display: table;
+  clear: both;
+  content: '';
+}
+
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+  width: vars.$width;
+}
+
+@media only screen and (min-width: vars.$breakpoint-sm) {
+  .col-sm-1 { width: math.div(vars.$width, 12) - math.div(vars.$gutter * 11, 12); }
+  .col-sm-2 { width: math.div(vars.$width, 6) - math.div(vars.$gutter * 10, 12); }
+  .col-sm-3 { width: math.div(vars.$width, 4) - math.div(vars.$gutter * 9, 12); }
+  .col-sm-4 { width: math.div(vars.$width, 3) - math.div(vars.$gutter * 8, 12); }
+  .col-sm-5 { width: math.div(vars.$width, math.div(12, 5)) - math.div(vars.$gutter * 7, 12); }
+  .col-sm-6 { width: math.div(vars.$width, 2) - math.div(vars.$gutter * 6, 12); }
+  .col-sm-7 { width: math.div(vars.$width, math.div(12, 7)) - math.div(vars.$gutter * 5, 12); }
+  .col-sm-8 { width: math.div(vars.$width, math.div(12, 8)) - math.div(vars.$gutter * 4, 12); }
+  .col-sm-9 { width: math.div(vars.$width, math.div(12, 9)) - math.div(vars.$gutter * 3, 12); }
+  .col-sm-10 { width: math.div(vars.$width, math.div(12, 10)) - math.div(vars.$gutter * 2, 12); }
+  .col-sm-11 { width: math.div(vars.$width, math.div(12, 11)) - math.div(vars.$gutter * 1, 12); }
+  .col-sm-12 { width: vars.$width; }
+}
+
+@media only screen and (min-width: vars.$breakpoint-md) {
+  .col-md-1 { width: math.div(vars.$width, 12) - math.div(vars.$gutter * 11, 12); }
+  .col-md-2 { width: math.div(vars.$width, 6) - math.div(vars.$gutter * 10, 12); }
+  .col-md-3 { width: math.div(vars.$width, 4) - math.div(vars.$gutter * 9, 12); }
+  .col-md-4 { width: math.div(vars.$width, 3) - math.div(vars.$gutter * 8, 12); }
+  .col-md-5 { width: math.div(vars.$width, math.div(12, 5)) - math.div(vars.$gutter * 7, 12); }
+  .col-md-6 { width: math.div(vars.$width, 2) - math.div(vars.$gutter * 6, 12); }
+  .col-md-7 { width: math.div(vars.$width, math.div(12, 7)) - math.div(vars.$gutter * 5, 12); }
+  .col-md-8 { width: math.div(vars.$width, math.div(12, 8)) - math.div(vars.$gutter * 4, 12); }
+  .col-md-9 { width: math.div(vars.$width, math.div(12, 9)) - math.div(vars.$gutter * 3, 12); }
+  .col-md-10 { width: math.div(vars.$width, math.div(12, 10)) - math.div(vars.$gutter * 2, 12); }
+  .col-md-11 { width: math.div(vars.$width, math.div(12, 11)) - math.div(vars.$gutter * 1, 12); }
+  .col-md-12 { width: vars.$width; }
+}
+
+@media only screen and (min-width: vars.$breakpoint-lg) {
+  .col-lg-1 { width: math.div(vars.$width, 12) - math.div(vars.$gutter * 11, 12); }
+  .col-lg-2 { width: math.div(vars.$width, 6) - math.div(vars.$gutter * 10, 12); }
+  .col-lg-3 { width: math.div(vars.$width, 4) - math.div(vars.$gutter * 9, 12); }
+  .col-lg-4 { width: math.div(vars.$width, 3) - math.div(vars.$gutter * 8, 12); }
+  .col-lg-5 { width: math.div(vars.$width, math.div(12, 5)) - math.div(vars.$gutter * 7, 12); }
+  .col-lg-6 { width: math.div(vars.$width, 2) - math.div(vars.$gutter * 6, 12); }
+  .col-lg-7 { width: math.div(vars.$width, math.div(12, 7)) - math.div(vars.$gutter * 5, 12); }
+  .col-lg-8 { width: math.div(vars.$width, math.div(12, 8)) - math.div(vars.$gutter * 4, 12); }
+  .col-lg-9 { width: math.div(vars.$width, math.div(12, 9)) - math.div(vars.$gutter * 3, 12); }
+  .col-lg-10 { width: math.div(vars.$width, math.div(12, 10)) - math.div(vars.$gutter * 2, 12); }
+  .col-lg-11 { width: math.div(vars.$width, math.div(12, 11)) - math.div(vars.$gutter * 1, 12); }
+  .col-lg-12 { width: vars.$width; }
+}
