@@ -1,7 +1,8 @@
 <div *ngIf="olympicCountries$ | async as olympicCountries" class="container chart-container">
   <div class="row">
     <div class="col-12 title-col mb-8">
-      <sl-button class="teal action-button ms-md-8" (click)="onTryToReload()" i18n>Try to reload</sl-button>
+      <sl-button *ngIf="canTryToReloadData" class="teal action-button ms-md-8" (click)="onTryToReload()" i18n>Try to
+        reload</sl-button>
       <h2 class="p-4 mx-auto" i18n>Medals per Country</h2>
     </div>
   </div>
