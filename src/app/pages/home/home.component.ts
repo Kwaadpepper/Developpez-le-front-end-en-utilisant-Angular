@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('olympicPieChart', { static: false }) pieChart!: OlympicPieChartComponent
 
   public canTryToReloadData = false
+  public numberOfJOs = 0
 
   public olympicCountries$: Observable<OlympicCountry[]> = of([])
 
@@ -35,7 +36,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(
         // ! Prevent modifying view while rendering
         delay(0),
-        tap(countries => this.setCanTryReload(countries.length === 0)),
+        tap((olympicCountries) => {
+          this.setCanTryReload(olympicCountries.length === 0)
+          this.numberOfJOs = this.countNumberOfJoFrom(olympicCountries)
+        }),
         catchError((error, caught) => {
           this.setCanTryReload(true)
           return caught
@@ -60,5 +64,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private setCanTryReload(canTry: boolean): void {
     this.canTryToReloadData = canTry
+  }
+
+  private countNumberOfJoFrom(countries: OlympicCountry[]): number {
+    return countries
+      .map(country => country.participations.length)
+      .reduce(nbParticipations => Math.max(nbParticipations))
   }
 }
