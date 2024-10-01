@@ -44,6 +44,10 @@ export class OlympicCountryLineChartComponent implements OnInit, OnDestroy {
         autoSelected: 'pan',
         tools: {
           zoom: false,
+          zoomin: '<img src="/assets/images/zoom-in.png" width="28">',
+          zoomout: '<img src="/assets/images/zoom-out.png" width="28">',
+          reset: '<img src="/assets/images/zoom-reset.png" width="25">',
+          selection: false,
           download: false,
           pan: true,
         },
