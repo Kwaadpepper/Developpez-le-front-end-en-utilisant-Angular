@@ -1,33 +1,30 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core'
 import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
+import { SortWay } from 'src/app/core/enums/sort-way'
 import OlympicCountry from 'src/app/core/models/olympic-country.interface'
 import Participation from 'src/app/core/models/participation.interface'
 import OlympicConfig from 'src/app/core/OlympicConfig'
+import { ApexChartJsInstance } from 'src/app/core/types/apex-charts/apex-chart-js-instance.type'
+import { DataPointSelectionOption } from 'src/app/core/types/apex-charts/event-data-point-selection-option.type'
+import { xAxisLabelClickOption } from 'src/app/core/types/apex-charts/event-x-axis-label-click-option.type'
 
-/** A selected data of an apex pie chart */
-interface DataPointSelectionOption {
-  dataPointIndex: number
-  selectedDataPoints: number[]
-  seriesIndex: number
-}
-/** This represents a js instance of an ApexChart, no definition is provided */
-type ApexChartJsInstance = object
-
-enum SortWay {
-  natural = 'natural',
-  ascending = 'ascending',
-  descending = 'descending',
-}
-
-const chartLineMinHeight = 45
-const chartLineMaxHeight = 70
-
+/** Max zoom step for the chart */
 const chartMinRatio = 0.6
+/** Min zoom step for the chart */
 const chartMaxRatio = 1.6
+/** Zoom step for the chart */
 const chartStepRatio = 0.2
 
+/** Max height for a chart bar on zoom */
+const chartLineMinHeight = 45
+/** Min height for a chart bar on zoom */
+const chartLineMaxHeight = 70
+
+/** Min font size multiplier for a x axis label on zoom */
 const chartFontMinRatio = 0.8
+/** Max font size multiplier for a x axis label on zoom */
 const chartFontMaxRatio = 1.3
+/** Font size zoom step */
 const chartFontStepRatio = 0.05
 
 @Component({
@@ -72,10 +69,10 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
         type: 'bar',
         toolbar: { show: false },
         events: {
-          xAxisLabelClick: (e: MouseEvent, chart: ApexChartJsInstance, option: DataPointSelectionOption): void => {
-            const country = this.olympicCountries.at(option.dataPointIndex)
+          xAxisLabelClick: (e: MouseEvent, chart: ApexChartJsInstance, option: xAxisLabelClickOption): void => {
+            const country = this.olympicCountries.at(option.labelIndex)
             if (country === undefined) {
-              throw new Error(`Failed to fetch country from list as index '${option.dataPointIndex}'`)
+              throw new Error(`Failed to fetch country from list as index '${option.labelIndex}'`)
             }
             this.onSelectedCountryEvent(country)
           },
