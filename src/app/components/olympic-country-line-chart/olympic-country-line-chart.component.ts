@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core'
-import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
+import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
 import Participation from 'src/app/core/models/participation.interface'
+import { PickApexOptions } from 'src/app/core/types/apex-charts/pick-apex-options.type'
 
 @Component({
   selector: 'app-olympic-country-line-chart',
@@ -10,80 +11,70 @@ import Participation from 'src/app/core/models/participation.interface'
   styleUrl: './olympic-country-line-chart.component.scss',
 })
 export class OlympicCountryLineChartComponent implements OnInit, OnDestroy {
-  @ViewChild('chart', { static: false }) chart?: ChartComponent
+  @ViewChild('chartComponent', { static: false }) chartComponent?: ChartComponent
 
   @Input({ required: true }) participations: Participation[] = []
 
-  public chartOptions: ApexOptions
+  public chart: PickApexOptions<'chart'>
+  public dataLabels: PickApexOptions<'dataLabels'>
+  public grid: PickApexOptions<'grid'>
+  public labels: PickApexOptions<'labels'>
+  public legend: PickApexOptions<'legend'>
+  public series: PickApexOptions<'series'>
+  public stroke: PickApexOptions<'stroke'>
+  public tooltip: PickApexOptions<'tooltip'>
+  public yaxis: PickApexOptions<'yaxis'>
+  public xaxis: PickApexOptions<'xaxis'>
+
+  public responsive: PickApexOptions<'responsive'>
 
   constructor() {
-    this.chartOptions = {
-      chart: {
-        type: 'line',
-        // zoom: { enabled: false },
-        // toolbar: { show: false },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      // grid: {
-      //   row: {
-      //     colors: ['#2f31ae', 'transparent'],
-      //     opacity: 0.5,
-      //   },
-      //   xaxis: {
-      //     lines: { show: true },
-      //   },
-      //   yaxis: {
-      //     lines: { show: true },
-      //   },
-      // },
-      labels: [
-        $localize`Medals`,
-      ],
-      legend: { show: false, floating: false },
-      series: [],
-      // stroke: { curve: 'straight' },
-      // title: {
-      //   text: '',
-      // },
-      tooltip: {
+    this.chart = {
+      type: 'line',
+      stacked: false,
+      height: 350,
+      zoom: {
+        type: 'x',
         enabled: true,
-        x: {
-          format: 'yyyy',
-        },
+        autoScaleYaxis: false,
+        allowMouseWheelZoom: true,
       },
-      xaxis: {
-        // type: 'datetime',
-        // labels: {
-        //   show: true,
-        //   datetimeUTC: false,
-        //   format: 'yyyy',
-        // },
-        // title: {
-        //   text: $localize`Dates`,
-        //   style: { cssClass: 'axis-x-title' },
-        // },
-        // tooltip: {
-        //   enabled: false,
-        // },
-      },
-      yaxis: {
-        min: 0,
-        max: (): number => {
-          const maxMedals: number = this.getMaxValueForMedals()
-          const percentPadding = 0.15
-          /** Add 15% padding-top on Y axis */
-          return Math.round(maxMedals + maxMedals * percentPadding)
-        },
-        labels: {
-          // No Float on X axis labels
-          formatter(val: number): string | string[] {
-            return String(Math.round(val))
-          },
+      selection: { enabled: false },
+      toolbar: {
+        autoSelected: 'pan',
+        tools: {
+          zoom: false,
+          download: false,
+          pan: true,
         },
       },
     }
+    this.dataLabels = { enabled: false }
+    this.grid = {
+      xaxis: { lines: { show: true } },
+      yaxis: { lines: { show: true } },
+    }
+    this.labels = [$localize`Medals`]
+    this.legend = { show: false, floating: false }
+    this.series = []
+    this.stroke = { curve: 'straight' }
+    this.tooltip = { enabled: true, x: { format: 'yyyy' } }
+    this.yaxis = {
+      min: 0,
+      max: (): number => {
+        const maxMedals: number = this.getMaxValueForMedals()
+        const percentPadding = 0.15
+        /** Add 15% padding-top on Y axis */
+        return Math.round(maxMedals + maxMedals * percentPadding)
+      },
+      labels: {
+        // No Float on X axis labels
+        formatter(val: number): string | string[] {
+          return String(Math.round(val))
+        },
+      },
+    }
+    this.xaxis = { categories: [] }
   }
 
   ngOnInit(): void {
@@ -91,17 +82,17 @@ export class OlympicCountryLineChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.chart?.resetSeries()
-    this.chart?.destroy()
-    this.chart?.ngOnDestroy()
+    this.chartComponent?.resetSeries()
+    this.chartComponent?.destroy()
+    this.chartComponent?.ngOnDestroy()
 
-    delete this.chart
+    delete this.chartComponent
   }
 
   private updatePieChartData(participations: Participation[]): void {
-    this.chartOptions.xaxis!.categories = participations
+    this.xaxis!.categories = participations
       .map((participation: Participation) => participation.year)
-    this.chartOptions.series = [
+    this.series = [
       {
         name: 'Medals this year',
         type: 'line',
