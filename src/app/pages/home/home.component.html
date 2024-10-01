@@ -1,12 +1,24 @@
-<div class="container">
+<div *ngIf="olympicCountries$ | async as olympicCountries" class="container chart-container">
   <div class="row">
-    <div class="col-12">
-      <h1 i18n>Olympic games app</h1>
-      <sl-button *ngIf="canTryToReloadData" (click)="onTryToReload()">Try to reload</sl-button>
+    <div class="col-12 title-col mb-8">
+      <sl-button class="teal action-button ms-md-8" (click)="onTryToReload()" i18n>Try to reload</sl-button>
+      <h2 class="p-4 mx-auto" i18n>Medals per Country</h2>
     </div>
   </div>
-</div>
-<div *ngIf="olympicCountries$ | async as olympicCountries" class="container chart-container">
+  <div class="row">
+    <div class="col-12 col-md-6 flex-middle">
+      <div class="chart-fact me-md-6">
+        <h3 i18n>Number of JOs</h3>
+        <span>2</span>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 flex-middle">
+      <div class="chart-fact ms-md-6">
+        <h3 i18n>Number of countries</h3>
+        <span>{{ olympicCountries.length }}</span>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-12">
       <app-olympic-pie-chart ngModel #olympicPieChart [olympicCountries]="olympicCountries"

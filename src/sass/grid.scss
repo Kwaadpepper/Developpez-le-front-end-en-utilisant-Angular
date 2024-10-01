@@ -19,11 +19,11 @@ body {
   margin-right: auto;
   margin-left: auto;
 
-  @media only screen and (min-width: vars.$breakpoint-small) {
+  @media only screen and (min-width: vars.$breakpoint-sm) {
     width: 80%;
   }
 
-  @media only screen and (min-width: vars.$breakpoint-large) {
+  @media only screen and (min-width: vars.$breakpoint-lg) {
     width: 75%;
     max-width: 60rem;
   }
@@ -66,7 +66,7 @@ body {
   width: vars.$width;
 }
 
-@media only screen and (min-width: vars.$breakpoint-small) {
+@media only screen and (min-width: vars.$breakpoint-sm) {
   .col-sm-1 { width: math.div(vars.$width, 12) - math.div(vars.$gutter * 11, 12); }
   .col-sm-2 { width: math.div(vars.$width, 6) - math.div(vars.$gutter * 10, 12); }
   .col-sm-3 { width: math.div(vars.$width, 4) - math.div(vars.$gutter * 9, 12); }
@@ -81,7 +81,7 @@ body {
   .col-sm-12 { width: vars.$width; }
 }
 
-@media only screen and (min-width: vars.$breakpoint-med) {
+@media only screen and (min-width: vars.$breakpoint-md) {
   .col-md-1 { width: math.div(vars.$width, 12) - math.div(vars.$gutter * 11, 12); }
   .col-md-2 { width: math.div(vars.$width, 6) - math.div(vars.$gutter * 10, 12); }
   .col-md-3 { width: math.div(vars.$width, 4) - math.div(vars.$gutter * 9, 12); }
@@ -96,7 +96,7 @@ body {
   .col-md-12 { width: vars.$width; }
 }
 
-@media only screen and (min-width: vars.$breakpoint-large) {
+@media only screen and (min-width: vars.$breakpoint-lg) {
   .col-lg-1 { width: math.div(vars.$width, 12) - math.div(vars.$gutter * 11, 12); }
   .col-lg-2 { width: math.div(vars.$width, 6) - math.div(vars.$gutter * 10, 12); }
   .col-lg-3 { width: math.div(vars.$width, 4) - math.div(vars.$gutter * 9, 12); }

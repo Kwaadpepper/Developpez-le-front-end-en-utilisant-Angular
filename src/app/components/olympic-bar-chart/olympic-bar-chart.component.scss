@@ -1,4 +1,5 @@
 @use 'vars' as vars;
+@use 'sass/partials/teal-button';
 
 .center-toolbar {
   display: flex;
@@ -8,5 +9,41 @@
 .yaxis-country-label {
   > tspan:nth-child(2) {
     font-size: 0.85em !important;
+  }
+}
+
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+::ng-deep .apexcharts-tooltip {
+  overflow: initial !important;
+  height: fit-content;
+  padding: 0;
+  border: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  transform: translateX(1rem);
+
+  .olympic-tooltip {
+    display: block;
+    flex-direction: column;
+    padding: var(--sl-spacing-medium) var(--sl-spacing-x-large);
+    border-radius: var(--sl-border-radius-x-large) !important;
+    background-color: var(--sl-color-teal-700);
+    color: var(--sl-color-neutral-0);
+  }
+
+  &::after {
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    right: calc(100% + -1.5rem);
+    width: 1.8rem;
+    height: 1.8rem;
+    border-width: 1rem;
+    border-style: solid;
+    border-color: transparent var(--sl-color-teal-700) transparent transparent;
+    border-radius: 1rem;
+    background-color: var(--sl-color-teal-700) transparent transparent;
+    content: '';
+    transform: translateX(-50%) translateY(-50%);
   }
 }

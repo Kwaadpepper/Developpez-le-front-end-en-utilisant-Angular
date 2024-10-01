@@ -1,3 +1,6 @@
+@use 'sass:map';
+@use 'vars' as vars;
+
 $shoe-spacings: (
   1: '3x-small',
   2: '2x-small',
@@ -10,79 +13,95 @@ $shoe-spacings: (
   9: '3x-large',
   10: '4x-large',
 );
+$break-points: (
+  'sm': vars.$breakpoint-sm,
+  'md': vars.$breakpoint-md,
+  'lg': vars.$breakpoint-lg,
+);
 
-.mx-auto {
-  margin-top: auto !important;
-  margin-bottom: auto !important;
+@mixin spacing($bprefix) {
+
+  .mx#{$bprefix}-auto {
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+
+  .my#{$bprefix}-auto {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+  }
+
+
+  .mt#{$bprefix}-auto {
+    margin-top: auto !important;
+  }
+
+  .mb#{$bprefix}-auto {
+    margin-bottom: auto !important;
+  }
+
+  .me#{$bprefix}-auto {
+    margin-right: auto !important;
+  }
+
+  .ms#{$bprefix}-auto {
+    margin-left: auto !important;
+  }
+
+  @each $prefix, $size in $shoe-spacings {
+    .p#{$bprefix}-#{$prefix} {
+      padding: var(--sl-spacing-#{$size}) !important;
+    }
+    .px#{$bprefix}-#{$prefix} {
+      padding-right: var(--sl-spacing-#{$size}) !important;
+      padding-left: var(--sl-spacing-#{$size}) !important;
+    }
+    .py#{$bprefix}-#{$prefix} {
+      padding-top: var(--sl-spacing-#{$size}) !important;
+      padding-bottom: var(--sl-spacing-#{$size}) !important;
+    }
+    .pt#{$bprefix}-#{$prefix} {
+      padding-top: var(--sl-spacing-#{$size}) !important;
+    }
+    .pb#{$bprefix}-#{$prefix} {
+      padding-bottom: var(--sl-spacing-#{$size}) !important;
+    }
+    .pe#{$bprefix}-#{$prefix} {
+      padding-right: var(--sl-spacing-#{$size}) !important;
+    }
+    .ps#{$bprefix}-#{$prefix} {
+      padding-left: var(--sl-spacing-#{$size}) !important;
+    }
+    .m#{$bprefix}-#{$prefix} {
+      margin: var(--sl-spacing-#{$size}) !important;
+    }
+    .mx#{$bprefix}-#{$prefix} {
+      margin-right: var(--sl-spacing-#{$size}) !important;
+      margin-left: var(--sl-spacing-#{$size}) !important;
+    }
+    .my#{$bprefix}-#{$prefix} {
+      margin-top: var(--sl-spacing-#{$size}) !important;
+      margin-bottom: var(--sl-spacing-#{$size}) !important;
+    }
+    .mt#{$bprefix}-#{$prefix} {
+      margin-top: var(--sl-spacing-#{$size}) !important;
+    }
+    .mb#{$bprefix}-#{$prefix} {
+      margin-bottom: var(--sl-spacing-#{$size}) !important;
+    }
+    .me#{$bprefix}-#{$prefix} {
+      margin-right: var(--sl-spacing-#{$size}) !important;
+    }
+    .ms#{$bprefix}-#{$prefix} {
+      margin-left: var(--sl-spacing-#{$size}) !important;
+    }
+  }
 }
 
-.my-auto {
-  margin-top: auto !important;
-  margin-bottom: auto !important;
-}
+@include spacing('');
 
-
-.mt-auto {
-  margin-top: auto !important;
-}
-
-.mb-auto {
-  margin-bottom: auto !important;
-}
-
-.me-auto {
-  margin-right: auto !important;
-}
-
-.ms-auto {
-  margin-left: auto !important;
-}
-
-@each $prefix, $size in $shoe-spacings {
-  .p-#{$prefix} {
-    padding: var(--sl-spacing-#{$size}) !important;
-  }
-  .px-#{$prefix} {
-    padding-right: var(--sl-spacing-#{$size}) !important;
-    padding-left: var(--sl-spacing-#{$size}) !important;
-  }
-  .py-#{$prefix} {
-    padding-top: var(--sl-spacing-#{$size}) !important;
-    padding-bottom: var(--sl-spacing-#{$size}) !important;
-  }
-  .pt-#{$prefix} {
-    padding-top: var(--sl-spacing-#{$size}) !important;
-  }
-  .pb-#{$prefix} {
-    padding-bottom: var(--sl-spacing-#{$size}) !important;
-  }
-  .pe-#{$prefix} {
-    padding-right: var(--sl-spacing-#{$size}) !important;
-  }
-  .ps-#{$prefix} {
-    padding-left: var(--sl-spacing-#{$size}) !important;
-  }
-  .m-#{$prefix} {
-    margin: var(--sl-spacing-#{$size}) !important;
-  }
-  .mx-#{$prefix} {
-    margin-right: var(--sl-spacing-#{$size}) !important;
-    margin-left: var(--sl-spacing-#{$size}) !important;
-  }
-  .my-#{$prefix} {
-    margin-top: var(--sl-spacing-#{$size}) !important;
-    margin-bottom: var(--sl-spacing-#{$size}) !important;
-  }
-  .mt-#{$prefix} {
-    margin-top: var(--sl-spacing-#{$size}) !important;
-  }
-  .mb-#{$prefix} {
-    margin-bottom: var(--sl-spacing-#{$size}) !important;
-  }
-  .me-#{$prefix} {
-    margin-right: var(--sl-spacing-#{$size}) !important;
-  }
-  .ms-#{$prefix} {
-    margin-left: var(--sl-spacing-#{$size}) !important;
+@each $bprefix, $breakpoint in $break-points {
+  @media only screen and (min-width: #{map.get($break-points, $bprefix)}) {
+    @include spacing(#{'-'}#{$bprefix});
   }
 }

@@ -1,0 +1,22 @@
+/* stylelint-disable-next-line selector-no-qualifying-type */
+sl-button.teal::part(base) {
+  box-shadow: 0 2px 10px #0002;
+  transition: var(--sl-transition-medium) transform ease, var(--sl-transition-medium) border ease;
+}
+
+/* stylelint-disable-next-line selector-no-qualifying-type */
+sl-button.teal::part(base):hover {
+  border-color: var(--sl-color-teal-30);
+  background-color: var(--sl-color-teal-50);
+  color: var(--sl-color-teal-700);
+}
+
+/* stylelint-disable-next-line selector-no-qualifying-type */
+sl-button.teal::part(base):active {
+  border-color: var(--sl-color-teal-900);
+}
+
+/* stylelint-disable-next-line selector-no-qualifying-type */
+sl-button.teal::part(base):focus-visible {
+  outline: solid 0.125rem var(--sl-color-teal-700);
+}

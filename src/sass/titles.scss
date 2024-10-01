@@ -6,31 +6,38 @@ h3,
 h4,
 h5,
 h6 {
+  margin-top: 0;
   color: vars.$title-color;
   font-family: vars.$title-font-family;
   font-weight: var(--sl-font-weight-semibold);
 }
 
 h1 {
+  margin-bottom: var(--sl-spacing-2x-large);
   font-size: var(--sl-font-size-3x-large);
 }
 
 h2 {
+  margin-bottom: var(--sl-spacing-x-large);
   font-size: var(--sl-font-size-2x-large);
 }
 
 h3 {
+  margin-bottom: var(--sl-spacing-large);
   font-size: var(--sl-font-size-x-large);
 }
 
 h4 {
+  margin-bottom: var(--sl-spacing-medium);
   font-size: var(--sl-font-size-large);
 }
 
 h5 {
+  margin-bottom: var(--sl-spacing-x-small);
   font-size: var(--sl-font-size-medium);
 }
 
 h6 {
+  margin-bottom: var(--sl-spacing-2x-small);
   font-size: var(--sl-font-size-small);
 }

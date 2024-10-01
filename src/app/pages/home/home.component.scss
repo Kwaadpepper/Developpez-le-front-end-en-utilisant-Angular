@@ -1,7 +1,56 @@
 @use 'vars' as vars;
+@use 'sass/partials/chart-facts';
+@use 'sass/partials/teal-button';
 
-@media only screen and (max-width: vars.$breakpoint-large) {
+.action-button {
+  width: fit-content;
+
+  @media screen and (min-width: vars.$breakpoint-md) {
+    position: absolute;
+    left: 0;
+  }
+}
+
+.title-col {
+  display: flex;
+  flex-flow: column-reverse;
+  align-items: center;
+  justify-content: center;
+
+  > h2 {
+    width: fit-content;
+    border-radius: var(--sl-border-radius-x-large);
+    background-color: var(--sl-color-teal-700);
+    color: var(--sl-color-neutral-0);
+
+    @media screen and (min-width: vars.$breakpoint-md) {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.flex-middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (min-width: vars.$breakpoint-md) {
+    justify-content: end;
+
+    &:nth-child(2) {
+      justify-content: start;
+    }
+  }
+
+  .chart-fact {
+    min-width: 14rem;
+  }
+}
+
+@media only screen and (max-width: vars.$breakpoint-lg) {
   .chart-container {
     width: 100% !important;
   }
 }
+
+

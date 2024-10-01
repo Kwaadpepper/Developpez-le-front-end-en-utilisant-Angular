@@ -1,10 +1,11 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core'
-import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core'
+import { ApexAxisChartSeries, ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
 import { SortWay } from 'src/app/core/enums/sort-way'
 import OlympicCountry from 'src/app/core/models/olympic-country.interface'
 import Participation from 'src/app/core/models/participation.interface'
 import OlympicConfig from 'src/app/core/OlympicConfig'
 import { ApexChartJsInstance } from 'src/app/core/types/apex-charts/apex-chart-js-instance.type'
+import { CustomTooltip } from 'src/app/core/types/apex-charts/apex-tooltip-custom.type'
 import { DataPointSelectionOption } from 'src/app/core/types/apex-charts/event-data-point-selection-option.type'
 import { xAxisLabelClickOption } from 'src/app/core/types/apex-charts/event-x-axis-label-click-option.type'
 
@@ -34,7 +35,6 @@ const chartFontStepRatio = 0.05
   templateUrl: './olympic-bar-chart.component.html',
   styleUrl: './olympic-bar-chart.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  encapsulation: ViewEncapsulation.ShadowDom,
 })
 
 /** Apex PieChartComponent wrapper */
@@ -104,7 +104,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
           breakpoint: 540,
           options: {
             dataLabels: { enabled: true },
-            tooltip: { enabled: false },
+            // tooltip: { enabled: false },
             yaxis: {
               labels: {
                 show: true,
@@ -118,6 +118,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
         {
           breakpoint: 720,
           options: {
+            tooltip: { enabled: false },
             yaxis: {
               labels: {
                 show: true,
@@ -131,6 +132,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
         {
           breakpoint: 960,
           options: {
+            tooltip: { enabled: true },
             yaxis: {
               labels: {
                 show: true,
@@ -143,7 +145,34 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
         },
       ],
       series: [],
+      tooltip: {
+        enabled: true,
+        followCursor: true,
+        custom: (
+          { series, seriesIndex, dataPointIndex, w }:
+            Omit<CustomTooltip, 'series'> & { series: ApexAxisChartSeries },
+        ): string => {
+          const serie = series[seriesIndex]
+          const dataString = serie instanceof Array ? serie[dataPointIndex] : 0
+          const dataLabel
+            = [...w.globals.labels[dataPointIndex]]
+              .join(' ')
+              .replace(this.getMedalsCountLabel(dataString), '')
 
+          const div = document.createElement('div')
+          div.classList.add('olympic-tooltip')
+          const spanCountry = document.createElement('span')
+          spanCountry.innerText = dataLabel
+          const spanMedals = document.createElement('span')
+          // U+1F3C5 = 🏅  U+00A0 = &nbsp;
+          spanMedals.innerText = `\u{1F3C5}\u{00A0}${dataString}`
+
+          div.appendChild(spanCountry)
+          div.appendChild(spanMedals)
+
+          return div.outerHTML
+        },
+      },
       yaxis: [{
         forceNiceScale: false,
         labels: {
@@ -329,9 +358,15 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
       output = splitStrInHalf(olympicCountry.country)
     }
     if (!this.canAddMedalsCountToApexYLabels) {
-      output.push($localize`Medals: ${this.sumTotalMedalsForAll(olympicCountry.participations)}`)
+      output.push(this.getMedalsCountLabel(
+        this.sumTotalMedalsForAll(olympicCountry.participations)),
+      )
     }
     return output
+  }
+
+  private getMedalsCountLabel(amountOfMedals: number): string {
+    return $localize`Medals: ${amountOfMedals}`
   }
 
   /**
