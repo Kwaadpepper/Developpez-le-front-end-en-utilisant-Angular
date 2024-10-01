@@ -1,5 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core'
-import { ApexAxisChartSeries, ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
+import { ApexAxisChartSeries, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
 import { SortWay } from 'src/app/core/enums/sort-way'
 import OlympicCountry from 'src/app/core/models/olympic-country.interface'
 import Participation from 'src/app/core/models/participation.interface'
@@ -8,25 +8,26 @@ import { ApexChartJsInstance } from 'src/app/core/types/apex-charts/apex-chart-j
 import { CustomTooltip } from 'src/app/core/types/apex-charts/apex-tooltip-custom.type'
 import { DataPointSelectionOption } from 'src/app/core/types/apex-charts/event-data-point-selection-option.type'
 import { xAxisLabelClickOption } from 'src/app/core/types/apex-charts/event-x-axis-label-click-option.type'
+import { PickApexOptions } from 'src/app/core/types/apex-charts/pick-apex-options.type'
 
 /** Max zoom step for the chart */
-const chartMinRatio = 0.6
+const CHART_MIN_RATIO = 0.6
 /** Min zoom step for the chart */
-const chartMaxRatio = 1.6
+const CHART_MAX_RATIO = 1.6
 /** Zoom step for the chart */
-const chartStepRatio = 0.2
+const CHART_STEP_RATIO = 0.2
 
 /** Max height for a chart bar on zoom */
-const chartLineMinHeight = 45
+const CHART_LINE_MIN_HEIGHT = 45
 /** Min height for a chart bar on zoom */
-const chartLineMaxHeight = 70
+const CHART_LINE_MAX_HEIGHT = 70
 
 /** Min font size multiplier for a x axis label on zoom */
-const chartFontMinRatio = 0.8
+const CHART_FONT_MIN_RATIO = 0.8
 /** Max font size multiplier for a x axis label on zoom */
-const chartFontMaxRatio = 1.3
+const CHART_FONT_MAX_RATIO = 1.3
 /** Font size zoom step */
-const chartFontStepRatio = 0.05
+const CHART_FONT_STEP_RATIO = 0.05
 
 @Component({
   selector: 'app-olympic-pie-chart',
@@ -39,13 +40,21 @@ const chartFontStepRatio = 0.05
 
 /** Apex PieChartComponent wrapper */
 export class OlympicPieChartComponent implements OnDestroy, OnChanges {
-  @ViewChild('chart', { static: false }) chart?: ChartComponent
+  @ViewChild('chartComponent') chartComponent?: ChartComponent
 
   @Input({ required: true }) olympicCountries: OlympicCountry[] = []
 
   @Output() selected = new EventEmitter<OlympicCountry>()
 
-  chartOptions: ApexOptions
+  public chart: PickApexOptions<'chart'>
+  public dataLabels: PickApexOptions<'dataLabels'>
+  public labels: PickApexOptions<'labels'>
+  public legend: PickApexOptions<'legend'>
+  public plotOptions: PickApexOptions<'plotOptions'>
+  public series: PickApexOptions<'series'>
+  public responsive: PickApexOptions<'responsive'>
+  public tooltip: PickApexOptions<'tooltip'>
+  public yaxis: PickApexOptions<'yaxis'>
 
   private sortByMedals: SortWay = SortWay.natural
   private originalIndexes: number[] = []
@@ -64,136 +73,122 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
   private shortestWidthForLabels = 100
 
   constructor() {
-    this.chartOptions = {
-      chart: {
-        type: 'bar',
-        toolbar: { show: false },
-        events: {
-          xAxisLabelClick: (e: MouseEvent, chart: ApexChartJsInstance, option: xAxisLabelClickOption): void => {
-            const country = this.olympicCountries.at(option.labelIndex)
-            if (country === undefined) {
-              throw new Error(`Failed to fetch country from list as index '${option.labelIndex}'`)
-            }
-            this.onSelectedCountryEvent(country)
-          },
-          dataPointSelection: (e: MouseEvent, chart: ApexChartJsInstance, option: DataPointSelectionOption): void => {
-            const country = this.olympicCountries.at(option.dataPointIndex)
-            if (country === undefined) {
-              throw new Error(`Failed to fetch country from list as index '${option.dataPointIndex}'`)
-            }
-            this.onSelectedCountryEvent(country)
-          },
+    this.chart = {
+      type: 'bar',
+      toolbar: { show: false },
+      events: {
+        xAxisLabelClick: (e: MouseEvent, chart: ApexChartJsInstance, option: xAxisLabelClickOption): void => {
+          const country = this.olympicCountries.at(option.labelIndex)
+          if (country === undefined) {
+            throw new Error(`Failed to fetch country from list as index '${option.labelIndex}'`)
+          }
+          this.onSelectedCountryEvent(country)
+        },
+        dataPointSelection: (e: MouseEvent, chart: ApexChartJsInstance, option: DataPointSelectionOption): void => {
+          const country = this.olympicCountries.at(option.dataPointIndex)
+          if (country === undefined) {
+            throw new Error(`Failed to fetch country from list as index '${option.dataPointIndex}'`)
+          }
+          this.onSelectedCountryEvent(country)
         },
       },
-      dataLabels: { enabled: false },
-      labels: [],
-      legend: {
-        show: false,
-      },
-      noData: {
-        text: 'Loading...',
-      },
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          distributed: true,
-        },
-      },
-      responsive: [
-        {
-          breakpoint: 540,
-          options: {
-            dataLabels: { enabled: true },
-            // tooltip: { enabled: false },
-            yaxis: {
-              labels: {
-                show: true,
-                minWidth: this.shortestWidthForLabels,
-                maxWidth: 150,
-                style: { fontSize: this.fontSizes[540] },
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 720,
-          options: {
-            tooltip: { enabled: false },
-            yaxis: {
-              labels: {
-                show: true,
-                minWidth: 200,
-                maxWidth: 250,
-                style: { fontSize: this.fontSizes[720] },
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 960,
-          options: {
-            tooltip: { enabled: true },
-            yaxis: {
-              labels: {
-                show: true,
-                minWidth: 250,
-                maxWidth: 300,
-                style: { fontSize: this.fontSizes[960] },
-              },
-            },
-          },
-        },
-      ],
-      series: [],
-      tooltip: {
-        enabled: true,
-        followCursor: true,
-        custom: (
-          { series, seriesIndex, dataPointIndex, w }:
-            Omit<CustomTooltip, 'series'> & { series: ApexAxisChartSeries },
-        ): string => {
-          const serie = series[seriesIndex]
-          const dataString = serie instanceof Array ? serie[dataPointIndex] : 0
-          const dataLabel
-            = [...w.globals.labels[dataPointIndex]]
-              .join(' ')
-              .replace(this.getMedalsCountLabel(dataString), '')
-
-          const div = document.createElement('div')
-          div.classList.add('olympic-tooltip')
-          const spanCountry = document.createElement('span')
-          spanCountry.innerText = dataLabel
-          const spanMedals = document.createElement('span')
-          // U+1F3C5 = 🏅  U+00A0 = &nbsp;
-          spanMedals.innerText = `\u{1F3C5}\u{00A0}${dataString}`
-
-          div.appendChild(spanCountry)
-          div.appendChild(spanMedals)
-
-          return div.outerHTML
-        },
-      },
-      yaxis: [{
-        forceNiceScale: false,
-        labels: {
-          show: true,
-          minWidth: 350,
-          maxWidth: 350,
-          style: { cssClass: 'yaxis-country-label', fontSize: this.fontSizes['default'] },
-        },
-      }],
     }
+    this.dataLabels = { enabled: false }
+    this.labels = []
+    this.legend = { show: false }
+    this.plotOptions = { bar: { horizontal: true, distributed: true } }
+    this.series = []
+    this.responsive = [
+      {
+        breakpoint: 540,
+        options: {
+          dataLabels: { enabled: true },
+          yaxis: {
+            labels: {
+              show: true,
+              minWidth: this.shortestWidthForLabels,
+              maxWidth: 150,
+              style: { fontSize: this.fontSizes[540] },
+            },
+          },
+        },
+      },
+      {
+        breakpoint: 720,
+        options: {
+          tooltip: { enabled: false },
+          yaxis: {
+            labels: {
+              show: true,
+              minWidth: 200,
+              maxWidth: 250,
+              style: { fontSize: this.fontSizes[720] },
+            },
+          },
+        },
+      },
+      {
+        breakpoint: 960,
+        options: {
+          tooltip: { enabled: true },
+          yaxis: {
+            labels: {
+              show: true,
+              minWidth: 250,
+              maxWidth: 300,
+              style: { fontSize: this.fontSizes[960] },
+            },
+          },
+        },
+      },
+    ]
+    this.tooltip = {
+      enabled: true,
+      followCursor: true,
+      custom: (
+        { series, seriesIndex, dataPointIndex, w }:
+          Omit<CustomTooltip, 'series'> & { series: ApexAxisChartSeries },
+      ): string => {
+        const serie = series[seriesIndex]
+        const dataString = serie instanceof Array ? serie[dataPointIndex] : 0
+        const dataLabel
+          = [...w.globals.labels[dataPointIndex]]
+            .join(' ')
+            .replace(this.getMedalsCountLabel(dataString), '')
+
+        const div = document.createElement('div')
+        div.classList.add('olympic-tooltip')
+        const spanCountry = document.createElement('span')
+        spanCountry.innerText = dataLabel
+        const spanMedals = document.createElement('span')
+        // U+1F3C5 = 🏅  U+00A0 = &nbsp;
+        spanMedals.innerText = `\u{1F3C5}\u{00A0}${dataString}`
+
+        div.appendChild(spanCountry)
+        div.appendChild(spanMedals)
+
+        return div.outerHTML
+      },
+    }
+    this.yaxis = [{
+      forceNiceScale: false,
+      labels: {
+        show: true,
+        minWidth: 350,
+        maxWidth: 350,
+        style: { cssClass: 'yaxis-country-label', fontSize: this.fontSizes['default'] },
+      },
+    }]
   }
 
   ngOnDestroy(): void {
-    this.chartOptions = {}
     this.olympicCountries = []
     this.originalIndexes = []
-    this.chart?.resetSeries()
-    this.chart?.destroy()
-    this.chart?.ngOnDestroy()
+    this.chartComponent?.resetSeries()
+    this.chartComponent?.destroy()
+    this.chartComponent?.ngOnDestroy()
 
-    delete this.chart
+    delete this.chartComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -234,14 +229,14 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
   onZoomIn(): void {
     const originalRatio = this.chartHeightPerCountryRatio
     this.chartHeightPerCountryRatio = Math.min(
-      chartMaxRatio,
-      this.chartHeightPerCountryRatio + chartStepRatio,
+      CHART_MAX_RATIO,
+      this.chartHeightPerCountryRatio + CHART_STEP_RATIO,
     )
 
     const originalFontRatio = this.chartfontRatio
     this.chartfontRatio = Math.min(
-      chartFontMaxRatio,
-      this.chartHeightPerCountryRatio + chartFontStepRatio,
+      CHART_FONT_MAX_RATIO,
+      this.chartHeightPerCountryRatio + CHART_FONT_STEP_RATIO,
     )
 
     if (
@@ -255,14 +250,14 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
   onZoomOut(): void {
     const originalRatio = this.chartHeightPerCountryRatio
     this.chartHeightPerCountryRatio = Math.max(
-      chartMinRatio,
-      this.chartHeightPerCountryRatio - chartStepRatio,
+      CHART_MIN_RATIO,
+      this.chartHeightPerCountryRatio - CHART_STEP_RATIO,
     )
 
     const originalFontRatio = this.chartfontRatio
     this.chartfontRatio = Math.max(
-      chartFontMinRatio,
-      this.chartHeightPerCountryRatio - chartFontStepRatio,
+      CHART_FONT_MIN_RATIO,
+      this.chartHeightPerCountryRatio - CHART_FONT_STEP_RATIO,
     )
 
     if (
@@ -289,7 +284,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
 
   private updatePieChartData(olympicCountries: OlympicCountry[]): void {
     // * Assign country names
-    this.chartOptions.labels = olympicCountries
+    this.labels = olympicCountries
       .sort(this.sortOlympicCountries.bind(this))
       /**
        * NOTE: Force stype as package types does not match actual js API
@@ -298,7 +293,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
       .map(olympicCountry => this.getFormattedCountryName(olympicCountry) as never)
 
     // * Assign medal totals
-    this.chartOptions.series = [{
+    this.series = [{
       name: $localize`Total number of medals won for all participations`,
       type: 'bar',
       data: olympicCountries
@@ -351,7 +346,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
     }
 
     if (
-      window.innerWidth < (this.chartOptions.responsive!.at(0)!.breakpoint ?? 540)
+      window.innerWidth < (this.responsive!.at(0)!.breakpoint ?? 540)
       && olympicCountry.country.length
       > Math.round(this.shortestWidthForLabels / 6)
     ) {
@@ -384,13 +379,13 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
    * @param olympicCountries All countries used to display stats
    */
   private adaptChartSettingsWith(olympicCountries: OlympicCountry[]): void {
-    let newLineHeight = Math.round(372 / window.screen.width * chartLineMaxHeight)
-    newLineHeight = Math.max(chartLineMinHeight, newLineHeight)
-    newLineHeight = Math.min(chartLineMaxHeight, newLineHeight)
+    let newLineHeight = Math.round(372 / window.screen.width * CHART_LINE_MAX_HEIGHT)
+    newLineHeight = Math.max(CHART_LINE_MIN_HEIGHT, newLineHeight)
+    newLineHeight = Math.min(CHART_LINE_MAX_HEIGHT, newLineHeight)
     newLineHeight = Math.round(newLineHeight * this.chartHeightPerCountryRatio)
-    this.chartOptions.chart!.height = newLineHeight * olympicCountries.length
+    this.chart!.height = newLineHeight * olympicCountries.length
 
-    this.chartOptions.responsive!.at(0)!.options!.dataLabels.enabled = this.canAddMedalsCountToApexYLabels
+    this.responsive!.at(0)!.options!.dataLabels.enabled = this.canAddMedalsCountToApexYLabels
   }
 
   /**
@@ -402,7 +397,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
       `${Math.ceil(chartFontStepRatio * Number.parseInt(pixels))}px`
 
     const updateFontSizeConfig = (
-      yAxis: typeof this.chartOptions.yaxis,
+      yAxis: typeof this.yaxis,
       fontSizeIdx: keyof typeof this.fontSizes,
     ): void => {
       if (yAxis instanceof Array) {
@@ -414,9 +409,9 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
     }
 
     const updateResponsiveFontSizeConfig = (responsiveConfigIdx: number): void => {
-      const breakpoint = this!.chartOptions!.responsive!.at(responsiveConfigIdx)!.breakpoint
-      const yAxis: typeof this.chartOptions.yaxis | undefined
-        = this!.chartOptions!.responsive!.at(responsiveConfigIdx)!.options!.yaxis
+      const breakpoint = this!.responsive!.at(responsiveConfigIdx)!.breakpoint
+      const yAxis: typeof this.yaxis | undefined
+        = this!.responsive!.at(responsiveConfigIdx)!.options!.yaxis
       if (breakpoint === undefined) {
         throw new Error('Responsive config is missing breakpoint')
       }
@@ -425,7 +420,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
     }
 
     // Chart config
-    updateFontSizeConfig(this!.chartOptions!.yaxis, 'default')
+    updateFontSizeConfig(this!.yaxis, 'default')
 
     // Chart responsive config
     updateResponsiveFontSizeConfig(0)
