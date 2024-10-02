@@ -8,6 +8,7 @@ export interface CustomTooltip {
     config: ApexOptions
     globals: object & {
       labels: string[] | string[][]
+      categoryLabels: string[]
     }
   }
 }
