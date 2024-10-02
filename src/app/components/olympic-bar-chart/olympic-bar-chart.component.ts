@@ -120,7 +120,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
           yaxis: {
             labels: {
               show: true,
-              minWidth: 200,
+              minWidth: 150,
               maxWidth: 250,
               style: { fontSize: this.fontSizes[720] },
             },
@@ -134,7 +134,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
           yaxis: {
             labels: {
               show: true,
-              minWidth: 250,
+              minWidth: 200,
               maxWidth: 300,
               style: { fontSize: this.fontSizes[960] },
             },
@@ -174,7 +174,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
       forceNiceScale: false,
       labels: {
         show: true,
-        minWidth: 350,
+        minWidth: 250,
         maxWidth: 350,
         style: { cssClass: 'yaxis-country-label', fontSize: this.fontSizes['default'] },
       },
