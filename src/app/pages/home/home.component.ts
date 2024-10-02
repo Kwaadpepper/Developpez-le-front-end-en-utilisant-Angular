@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { Router } from '@angular/router'
 import { catchError, delay, Observable, of, Subject, take, tap } from 'rxjs'
-import { OlympicPieChartComponent } from 'src/app/components/olympic-bar-chart/olympic-bar-chart.component'
+import { OlympicBarChartComponent } from 'src/app/components/olympic-bar-chart/olympic-bar-chart.component'
 import OlympicCountry from 'src/app/core/models/olympic-country.interface'
 import { OlympicService } from 'src/app/core/services/olympic-countries.service'
 
@@ -12,7 +12,7 @@ import { OlympicService } from 'src/app/core/services/olympic-countries.service'
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  @ViewChild('olympicPieChart', { static: false }) pieChart!: OlympicPieChartComponent
+  @ViewChild('olympicBarChart', { static: false }) barChart!: OlympicBarChartComponent
 
   public canTryToReloadData = false
   public numberOfJOs = 0

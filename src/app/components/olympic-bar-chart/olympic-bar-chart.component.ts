@@ -30,7 +30,7 @@ const CHART_FONT_MAX_RATIO = 1.3
 const CHART_FONT_STEP_RATIO = 0.05
 
 @Component({
-  selector: 'app-olympic-pie-chart',
+  selector: 'app-olympic-bar-chart',
   standalone: true,
   imports: [NgApexchartsModule],
   templateUrl: './olympic-bar-chart.component.html',
@@ -39,7 +39,7 @@ const CHART_FONT_STEP_RATIO = 0.05
 })
 
 /** Apex PieChartComponent wrapper */
-export class OlympicPieChartComponent implements OnDestroy, OnChanges {
+export class OlympicBarChartComponent implements OnDestroy, OnChanges {
   @ViewChild('chartComponent') chartComponent?: ChartComponent
 
   @Input({ required: true }) olympicCountries: OlympicCountry[] = []

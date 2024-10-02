@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { OlympicPieChartComponent } from './olympic-bar-chart.component'
+import { OlympicBarChartComponent } from './olympic-bar-chart.component'
 
 describe('PieChartComponent', () => {
-  let component: OlympicPieChartComponent
-  let fixture: ComponentFixture<OlympicPieChartComponent>
+  let component: OlympicBarChartComponent
+  let fixture: ComponentFixture<OlympicBarChartComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OlympicPieChartComponent],
+      imports: [OlympicBarChartComponent],
     })
       .compileComponents()
 
-    fixture = TestBed.createComponent(OlympicPieChartComponent)
+    fixture = TestBed.createComponent(OlympicBarChartComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })
