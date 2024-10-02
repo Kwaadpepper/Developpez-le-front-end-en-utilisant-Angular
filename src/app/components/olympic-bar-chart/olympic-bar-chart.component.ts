@@ -1,4 +1,5 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core'
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core'
+import { cloneDeep } from 'lodash-es'
 import { ApexAxisChartSeries, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
 import { SortWay } from 'src/app/core/enums/sort-way'
 import OlympicCountry from 'src/app/core/models/olympic-country.interface'
@@ -42,7 +43,10 @@ const CHART_FONT_STEP_RATIO = 0.05
 export class OlympicBarChartComponent implements OnDestroy, OnChanges {
   @ViewChild('chartComponent') chartComponent?: ChartComponent
 
-  @Input({ required: true }) olympicCountries: OlympicCountry[] = []
+  @Input({
+    required: true,
+    transform: (countries: OlympicCountry[]) => cloneDeep(countries),
+  }) olympicCountries: OlympicCountry[] = []
 
   @Output() selected = new EventEmitter<OlympicCountry>()
 
@@ -192,9 +196,12 @@ export class OlympicBarChartComponent implements OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['olympicCountries']) {
-      const countries: OlympicCountry[] = changes['olympicCountries'].currentValue
-      this.originalIndexes = countries.map(country => country.id)
+    const olympicCountriesChanges: SimpleChange | undefined = changes['olympicCountries']
+    if (olympicCountriesChanges) {
+      const countries: OlympicCountry[] = olympicCountriesChanges.currentValue
+      if (olympicCountriesChanges.firstChange) {
+        this.originalIndexes = countries.map(country => country.id)
+      }
       // NOTE: Apex emits a warning if there are too many items to display using bar chart, 100 is the limit on apex's code
       this.canAddMedalsCountToApexYLabels = this.olympicCountries.length < 100
       this.forceChartRender()
