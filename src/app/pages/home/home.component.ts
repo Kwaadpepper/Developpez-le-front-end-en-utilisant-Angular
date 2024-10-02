@@ -49,7 +49,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroyOlympicCountries$.next(true)
-    this.pieChart.ngOnDestroy()
   }
 
   onTryToReload(): void {

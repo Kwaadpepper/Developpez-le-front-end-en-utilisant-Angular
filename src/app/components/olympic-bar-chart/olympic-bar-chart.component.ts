@@ -78,14 +78,14 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
       toolbar: { show: false },
       events: {
         xAxisLabelClick: (e: MouseEvent, chart: ApexChartJsInstance, option: xAxisLabelClickOption): void => {
-          const country = this.olympicCountries.at(option.labelIndex)
+          const country = this.olympicCountries[option.labelIndex]
           if (country === undefined) {
             throw new Error(`Failed to fetch country from list as index '${option.labelIndex}'`)
           }
           this.onSelectedCountryEvent(country)
         },
         dataPointSelection: (e: MouseEvent, chart: ApexChartJsInstance, option: DataPointSelectionOption): void => {
-          const country = this.olympicCountries.at(option.dataPointIndex)
+          const country = this.olympicCountries[option.dataPointIndex]
           if (country === undefined) {
             throw new Error(`Failed to fetch country from list as index '${option.dataPointIndex}'`)
           }
@@ -222,7 +222,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
       if (tmp === undefined) continue
       sortWays.push(tmp)
     } while (++i < sortWayIdx)
-    this.sortByMedals = sortWays.at(0) ?? SortWay.natural
+    this.sortByMedals = sortWays[0] ?? SortWay.natural
     this.forceChartRender()
   }
 
@@ -304,7 +304,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
             y: olympicCountry.participations
               .map(participation => participation.medalsCount)
               .reduce((prev, curr) => prev + curr),
-            fillColor: OlympicConfig.getColors().at(index % OlympicConfig.getColors().length),
+            fillColor: OlympicConfig.getColors()[index % OlympicConfig.getColors().length],
           } as never
         }),
     }]
@@ -346,7 +346,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
     }
 
     if (
-      window.innerWidth < (this.responsive!.at(0)!.breakpoint ?? 540)
+      window.innerWidth < (this.responsive![0]!.breakpoint ?? 540)
       && olympicCountry.country.length
       > Math.round(this.shortestWidthForLabels / 6)
     ) {
@@ -385,7 +385,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
     newLineHeight = Math.round(newLineHeight * this.chartHeightPerCountryRatio)
     this.chart!.height = newLineHeight * olympicCountries.length
 
-    this.responsive!.at(0)!.options!.dataLabels.enabled = this.canAddMedalsCountToApexYLabels
+    this.responsive![0]!.options!.dataLabels.enabled = this.canAddMedalsCountToApexYLabels
   }
 
   /**
@@ -401,7 +401,7 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
       fontSizeIdx: keyof typeof this.fontSizes,
     ): void => {
       if (yAxis instanceof Array) {
-        yAxis.at(0)!.labels!.style!.fontSize = getFontUsingRatio(this.fontSizes[fontSizeIdx])
+        yAxis[0]!.labels!.style!.fontSize = getFontUsingRatio(this.fontSizes[fontSizeIdx])
       }
       else {
         yAxis!.labels!.style!.fontSize = getFontUsingRatio(this.fontSizes['default'])
@@ -409,9 +409,9 @@ export class OlympicPieChartComponent implements OnDestroy, OnChanges {
     }
 
     const updateResponsiveFontSizeConfig = (responsiveConfigIdx: number): void => {
-      const breakpoint = this!.responsive!.at(responsiveConfigIdx)!.breakpoint
+      const breakpoint = this!.responsive![responsiveConfigIdx]!.breakpoint
       const yAxis: typeof this.yaxis | undefined
-        = this!.responsive!.at(responsiveConfigIdx)!.options!.yaxis
+        = this!.responsive![0]!.options!.yaxis
       if (breakpoint === undefined) {
         throw new Error('Responsive config is missing breakpoint')
       }

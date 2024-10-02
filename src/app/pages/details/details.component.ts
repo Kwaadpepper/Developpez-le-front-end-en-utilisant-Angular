@@ -12,10 +12,11 @@ import Participation from 'src/app/core/models/participation.interface'
 })
 export class DetailsComponent implements OnInit {
   public olympicCountry: OlympicCountry
-  public participations: Participation[] = []
+  public participations: Participation[]
 
   constructor(private titleService: Title, private route: ActivatedRoute) {
     this.olympicCountry = cloneDeep(this.route.snapshot.data['olympicCountry'])
+    this.participations = []
     this.titleService.setTitle($localize`${this.olympicCountry.country} details`)
   }
 

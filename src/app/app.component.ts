@@ -9,6 +9,8 @@ import { OlympicService } from './core/services/olympic-countries.service'
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  public title = 'olympic-games-starter'
+
   constructor(
     private olympicService: OlympicService,
     private router: Router,
