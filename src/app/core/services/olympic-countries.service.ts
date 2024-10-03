@@ -11,6 +11,7 @@ import { ToastService } from './toast.service'
 
 export class OlympicService implements OnDestroy {
   // * Unique source of data for now
+  // private olympicUrl = './assets/mock/olympic.json'
   private olympicUrl = './assets/mock/generated.json'
   // * Olympic countries fetcher
   private olympicCountries$ = new BehaviorSubject<OlympicCountry[]>([])
