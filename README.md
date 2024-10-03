@@ -64,9 +64,3 @@ It will potentially be addressed soon:
 ## Notes
 
 - There is one warning on build about a shoelace rule `sl-toast-stack` : `Pseudo-elements are not supported by css-select`, you can safely ignore it.
-
-## TODO
-
-- Pas de switch, un seul graphique par page
-- Utiliser Observable , BehaviorSubject.
-- Styler et responsive
