@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core'
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { ApexAxisChartSeries, ChartComponent, NgApexchartsModule } from 'ng-apexcharts'
 import Participation from 'src/app/core/models/participation.interface'
 import OlympicConfig from 'src/app/core/OlympicConfig'
@@ -11,6 +11,7 @@ import { PickApexOptions } from 'src/app/core/types/apex-charts/pick-apex-option
   imports: [NgApexchartsModule],
   templateUrl: './olympic-country-line-chart.component.html',
   styleUrl: './olympic-country-line-chart.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class OlympicCountryLineChartComponent implements OnInit, OnDestroy {
   @ViewChild('chartComponent', { static: false }) chartComponent?: ChartComponent
@@ -74,8 +75,8 @@ export class OlympicCountryLineChartComponent implements OnInit, OnDestroy {
     this.yaxis = {
       min: 0,
       max: (): number => {
-        const maxMedals: number = this.participations
-          .map(participation => participation.medalsCount)
+        const maxMedals: number = [0, ...this.participations
+          .map(participation => participation.medalsCount)]
           .reduce((prev, curr) => Math.max(prev, curr))
         const percentPadding = 0.15
         /** Add 15% padding-top on Y axis */

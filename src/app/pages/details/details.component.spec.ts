@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { AppComponent } from 'src/app/app.component'
+import { OlympicCountryLineChartComponent } from 'src/app/components/olympic-country-line-chart/olympic-country-line-chart.component'
 import { DetailsComponent } from './details.component'
 
 describe('DetailsComponent', () => {
@@ -11,6 +13,8 @@ describe('DetailsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent, DetailsComponent],
+      imports: [OlympicCountryLineChartComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
           provide: ActivatedRoute,
