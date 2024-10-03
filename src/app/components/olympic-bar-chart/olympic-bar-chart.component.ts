@@ -268,6 +268,7 @@ export class OlympicBarChartComponent implements OnDestroy, OnChanges {
     this.adaptChartFontSize()
   }
 
+  /** Update chart labels and series */
   private updateChartData(olympicCountries: OlympicCountry[]): void {
     // * Assign country names
     this.labels = olympicCountries
@@ -296,9 +297,7 @@ export class OlympicBarChartComponent implements OnDestroy, OnChanges {
     }]
   }
 
-  /**
-   * Olympic country sorter function
-   */
+  /** Olympic country sorter function */
   private olympicCountrySorter(a: OlympicCountry, b: OlympicCountry): number {
     switch (this.sortByMedals) {
       case SortWay.ascending: return this.sumTotalMedalsForAll(a.participations)
@@ -327,6 +326,7 @@ export class OlympicBarChartComponent implements OnDestroy, OnChanges {
     return output
   }
 
+  /** Format tooltips text */
   private tooltipFormatter(
     { series, seriesIndex, dataPointIndex, w }:
       Omit<CustomTooltip, 'series'> & { series: ApexAxisChartSeries },
