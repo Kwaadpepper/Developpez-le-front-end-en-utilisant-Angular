@@ -69,32 +69,14 @@ export class OlympicCountryLineChartComponent implements OnInit, OnDestroy {
     this.tooltip = {
       enabled: true,
       x: { format: 'yyyy' },
-      custom: (
-        { series, seriesIndex, dataPointIndex, w }:
-          Omit<CustomTooltip, 'series'> & { series: ApexAxisChartSeries },
-      ): string => {
-        const serie = series[seriesIndex]
-        const dataString = serie instanceof Array ? serie[dataPointIndex] : 0
-        const dataLabel = $localize`${dataString} \u{1F3C5}\u{00A0} Medal${dataString ? 's' : ''} won `
-
-        const div = document.createElement('div')
-        div.classList.add('olympic-tooltip')
-        const spanCountry = document.createElement('span')
-        spanCountry.innerText = dataLabel
-        const spanMedals = document.createElement('span')
-        // U+1F3C5 = 🏅  U+00A0 = &nbsp;
-        spanMedals.innerText = `in ${w.globals.categoryLabels[dataPointIndex]}`
-
-        div.appendChild(spanCountry)
-        div.appendChild(spanMedals)
-
-        return div.outerHTML
-      },
+      custom: this.tooltipFormatter.bind(this),
     }
     this.yaxis = {
       min: 0,
       max: (): number => {
-        const maxMedals: number = this.getMaxValueForMedals()
+        const maxMedals: number = this.participations
+          .map(participation => participation.medalsCount)
+          .reduce((prev, curr) => Math.max(prev, curr))
         const percentPadding = 0.15
         /** Add 15% padding-top on Y axis */
         return Math.round(maxMedals + maxMedals * percentPadding)
@@ -110,7 +92,7 @@ export class OlympicCountryLineChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.updatePieChartData(this.participations)
+    this.updateChartData()
   }
 
   ngOnDestroy(): void {
@@ -121,7 +103,9 @@ export class OlympicCountryLineChartComponent implements OnInit, OnDestroy {
     delete this.chartComponent
   }
 
-  private updatePieChartData(participations: Participation[]): void {
+  /** Update chart labels and series */
+  private updateChartData(): void {
+    const participations: Participation[] = this.participations
     this.xaxis!.categories = participations
       .map((participation: Participation) => participation.year)
     this.series = [
@@ -133,9 +117,26 @@ export class OlympicCountryLineChartComponent implements OnInit, OnDestroy {
     ]
   }
 
-  private getMaxValueForMedals(): number {
-    return this.participations
-      .map(participation => participation.medalsCount)
-      .reduce((prev, curr) => Math.max(prev, curr))
+  /** Format tooltips text */
+  private tooltipFormatter(
+    { series, seriesIndex, dataPointIndex, w }:
+      Omit<CustomTooltip, 'series'> & { series: ApexAxisChartSeries },
+  ): string {
+    const serie = series[seriesIndex]
+    const dataString = serie instanceof Array ? serie[dataPointIndex] : 0
+    const dataLabel = $localize`${dataString} \u{1F3C5}\u{00A0} Medal${dataString ? 's' : ''} won `
+
+    const div = document.createElement('div')
+    div.classList.add('olympic-tooltip')
+    const spanCountry = document.createElement('span')
+    spanCountry.innerText = dataLabel
+    const spanMedals = document.createElement('span')
+    // U+1F3C5 = 🏅  U+00A0 = &nbsp;
+    spanMedals.innerText = `in ${w.globals.categoryLabels[dataPointIndex]}`
+
+    div.appendChild(spanCountry)
+    div.appendChild(spanMedals)
+
+    return div.outerHTML
   }
 }
