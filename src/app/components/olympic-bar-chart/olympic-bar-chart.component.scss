@@ -6,7 +6,13 @@
   justify-content: center;
 }
 
-.yaxis-country-label {
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+::ng-deep .yaxis-country-label {
+  > tspan:nth-child(1) {
+    font-size: 0.95em !important;
+    font-weight: bold !important;
+  }
+
   > tspan:nth-child(2) {
     font-size: 0.85em !important;
   }
