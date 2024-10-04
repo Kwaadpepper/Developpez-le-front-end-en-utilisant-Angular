@@ -27,3 +27,11 @@
     color: var(--sl-color-neutral-0);
   }
 }
+
+.x-axis-label {
+  display: block;
+  color: var(--sl-color-neutral-500);
+  font-size: x-large;
+  font-size: var(--sl-font-size-x-large);
+  text-align: center;
+}
