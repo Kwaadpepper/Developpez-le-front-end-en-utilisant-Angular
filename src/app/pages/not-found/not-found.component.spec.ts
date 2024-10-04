@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { AppComponent } from 'src/app/app.component'
 import { NotFoundComponent } from './not-found.component'
 
 describe('NotFoundComponent', () => {
@@ -8,7 +10,8 @@ describe('NotFoundComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NotFoundComponent],
+      declarations: [AppComponent, NotFoundComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents()
 
