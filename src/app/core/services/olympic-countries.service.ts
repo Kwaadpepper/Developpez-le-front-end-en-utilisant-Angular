@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, OnDestroy } from '@angular/core'
 import { cloneDeep } from 'lodash-es'
-import { BehaviorSubject, catchError, Observable, retry, Subject, take, tap, throwError } from 'rxjs'
+import { BehaviorSubject, catchError, Observable, retry, Subject, tap, throwError } from 'rxjs'
 import OlympicCountry from '../models/olympic-country.interface'
 import { ToastService } from './toast.service'
 
@@ -69,9 +69,8 @@ export class OlympicService implements OnDestroy {
           .loadInitialData()
         // * Then look for the country
           .pipe(
-            take(1),
             tap(() => this.findOlympicCountry(id)),
-          )
+          ).subscribe()
       }
       else {
       // ! Yes
