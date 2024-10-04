@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
-
+import { default as olympicJson } from './../../../assets/mock/olympic.json'
 import { OlympicCountryLineChartComponent } from './olympic-country-line-chart.component'
 
 describe('OlympicCountryLineChartComponent', () => {
@@ -14,6 +14,7 @@ describe('OlympicCountryLineChartComponent', () => {
 
     fixture = TestBed.createComponent(OlympicCountryLineChartComponent)
     component = fixture.componentInstance
+    component.participations = olympicJson[0]?.participations
     fixture.detectChanges()
   })
 
