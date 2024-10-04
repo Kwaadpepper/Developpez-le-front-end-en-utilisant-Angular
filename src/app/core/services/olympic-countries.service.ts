@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, OnDestroy } from '@angular/core'
 import { cloneDeep } from 'lodash-es'
-import { BehaviorSubject, catchError, Observable, Subject, take, tap } from 'rxjs'
+import { BehaviorSubject, catchError, Observable, retry, Subject, take, tap, throwError } from 'rxjs'
 import OlympicCountry from '../models/olympic-country.interface'
 import { ToastService } from './toast.service'
 
@@ -41,12 +41,14 @@ export class OlympicService implements OnDestroy {
           this.olympicCountries = value
           this.olympicCountries$.next(cloneDeep(value))
         }),
-        catchError((error, caught) => {
+
+        retry(3),
+        catchError(() => {
           const message = $localize`Error while fetching olympic countries from server`
           this.toastService.error(message)
           this.olympicCountries$.next([])
           this.olympicCountries$.error(message)
-          return caught
+          return throwError(() => new Error(message))
         }),
       )
   }
