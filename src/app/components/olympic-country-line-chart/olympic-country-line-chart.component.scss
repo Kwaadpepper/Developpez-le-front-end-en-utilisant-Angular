@@ -3,6 +3,11 @@
   color: #f00 !important;
 }
 
+.center-toolbar {
+  display: flex;
+  justify-content: center;
+}
+
 /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
 ::ng-deep .apexcharts-tooltip {
   overflow: initial !important;

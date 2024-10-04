@@ -1,3 +1,22 @@
+<div class="center-toolbar">
+  <sl-button-group>
+    <sl-button class="teal" (click)="onPanLeft();$event.stopPropagation();">
+      <sl-icon name="arrow-left-circle" [title]="panLeftLabel"></sl-icon>
+    </sl-button>
+    <sl-button class="teal" (click)="onPanRight();$event.stopPropagation();">
+      <sl-icon name="arrow-right-circle" [title]="panRightLabel"></sl-icon>
+    </sl-button>
+    <sl-button class="teal" (click)="onZoomIn();$event.stopPropagation();">
+      <sl-icon name="zoom-in" [title]="zoomInLabel"></sl-icon>
+    </sl-button>
+    <sl-button class="teal" (click)="onZoomOut();$event.stopPropagation();">
+      <sl-icon name="zoom-out" [title]="zoomOutLabel"></sl-icon>
+    </sl-button>
+    <sl-button class="teal" (click)="onResetZoom();$event.stopPropagation();">
+      <sl-icon name="arrow-repeat" [title]="zoomResetLabel"></sl-icon>
+    </sl-button>
+  </sl-button-group>
+</div>
 <!--noformat-->
 <apx-chart
   ngModel #chartComponent
