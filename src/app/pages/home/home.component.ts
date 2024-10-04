@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { Router } from '@angular/router'
-import { catchError, delay, Observable, of, Subject, take, tap } from 'rxjs'
+import { catchError, delay, Observable, of, Subject, take, tap, throwError } from 'rxjs'
 import { OlympicBarChartComponent } from 'src/app/components/olympic-bar-chart/olympic-bar-chart.component'
 import OlympicCountry from 'src/app/core/models/olympic-country.interface'
 import { OlympicService } from 'src/app/core/services/olympic-countries.service'
@@ -40,11 +40,15 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.setCanTryReload(olympicCountries.length === 0)
           this.numberOfJOs = this.countNumberOfJoFrom(olympicCountries)
         }),
-        catchError((error, caught) => {
+        catchError(() => {
           this.setCanTryReload(true)
-          return caught
+          return throwError(() => new Error())
         }),
       )
+    this.olympicService
+      .loadInitialData()
+      .pipe(take(1))
+      .subscribe()
   }
 
   ngOnDestroy(): void {
@@ -52,7 +56,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onTryToReload(): void {
-    this.olympicService.loadInitialData()
+    this.olympicService
+      .loadInitialData()
       .pipe(take(1))
       .subscribe()
   }
@@ -66,8 +71,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private countNumberOfJoFrom(countries: OlympicCountry[]): number {
-    return countries
-      .map(country => country.participations.length)
+    return [...countries
+      .map(country => country.participations.length), 0]
       .reduce(nbParticipations => Math.max(nbParticipations))
   }
 }
